@@ -15,7 +15,7 @@ warnings.filterwarnings('ignore')
 import pandas as pd
 from library.datasets import get_dataframe_summarized, standarize, StandarizeMethod
 from library.depresjon import get_measured_days, read_activity_dataset, read_scores_dataset
-from library.timeseries import extract_ts_features
+from library.timeseries import extract_ts_features, ComputeFeatures
 
 # Parse command line arguments
 parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
@@ -31,7 +31,7 @@ frequency = args['frequency']
 summarize_method = args['summarize_method']
 standarize_method = args['standarize_method']
 remove_outliers = args['standarize_remove_outliers']
-compute_features = args['compute_features'].lower()
+compute_features = ComputeFeatures.MINIMAL if args['compute_features'].lower() == 'minimal' else ComputeFeatures.ALL
 
 if __name__ == '__main__':
     # datasets path
@@ -62,10 +62,10 @@ if __name__ == '__main__':
         # extract features
         extracted_features = extract_ts_features(
             df_grouped,
+            compute_features,
             column_id = 'id',
             column_sort = 'timestamp',
             column_value = 'activity',
-            default_fc_parameters = None if compute_features == 'all' else MinimalFCParameters()
         )
         
         features_dataset = pd.concat([

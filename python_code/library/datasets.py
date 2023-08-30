@@ -2,6 +2,7 @@ from enum import Enum
 import numpy as np
 import pandas as pd
 from scipy.stats import norm, gzscore
+from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from typing import NewType
 
@@ -40,3 +41,31 @@ def standarize(
 #
 def normalize(values: np.ndarray) -> np.ndarray:
     return MinMaxScaler().fit_transform(values.reshape((len(values), 1))).reshape((len(values),))
+
+def split_dataset(
+    df: pd.DataFrame,
+    predict_column: str,
+    test_size: float = 0.2,
+    **kwargs
+):
+    features = df.drop(predict_column, axis = 1)
+    target = df[predict_column]
+    x_train, x_test, y_train, y_test = train_test_split(
+        features,
+        target,
+        test_size = test_size,
+        **kwargs
+    )
+    
+    x_train[predict_column] = y_train
+    x_test[predict_column] = y_test
+    
+    return x_train, x_test
+
+def split_dataset_adversarial_validation(
+    df: pd.DataFrame,
+    predict_column: str,
+    test_size: float = 0.2,
+    **kwargs
+):
+    pass
