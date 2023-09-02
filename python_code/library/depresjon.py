@@ -1,6 +1,5 @@
 from datetime import timedelta
 import pandas as pd
-import numpy as np
 
 def extract_data_for_days_measured(df: pd.DataFrame, days_measured: int) -> pd.DataFrame:
     df_grouped_days = df.groupby(pd.Grouper(freq='1D')).activity.count()

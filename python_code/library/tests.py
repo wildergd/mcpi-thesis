@@ -1,7 +1,6 @@
 from enum import Enum
 from typing import Tuple, Union
 import numpy as np
-import pandas as pd
 from statsmodels.stats.diagnostic import kstest_normal
 from statsmodels.tsa.stattools import adfuller, kpss
 

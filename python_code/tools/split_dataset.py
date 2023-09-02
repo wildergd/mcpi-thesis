@@ -46,7 +46,6 @@ if __name__ == '__main__':
         
     # datasets path
     DATASETS_PATH = path.realpath(path.join(SCRIPT_DIR, '..', '..', 'dataset'))
-    print(path.abspath(csv_file))
     
     # read full dataset
     df = pd.read_csv(path.abspath(csv_file), index_col='number')

@@ -102,7 +102,7 @@ def split_dataset_adversarial_validation(
     features = tmp_df.drop(['is_test'], axis = 1)
     target = tmp_df['is_test']
     
-    model = RandomForestClassifier(max_features=10)    
+    model = RandomForestClassifier(max_features = 10)
     
     noisy_features = []
     max_iters = 10
