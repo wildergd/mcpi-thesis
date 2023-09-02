@@ -99,10 +99,13 @@ if __name__ == '__main__':
     # datasets path
     DATASETS_PATH = path.realpath(path.join(SCRIPT_DIR, '..', '..', 'dataset'))
     output_folder = f'{DATASETS_PATH}/features/{classification_method}'
+    file_name, _ = path.splitext(path.basename(path.abspath(csv_file)))
     
     if not path.exists(output_folder):
         makedirs(output_folder)
     
-    f = open(f'{output_folder}/{path.basename(path.abspath(csv_file))}', 'w')
+    f = open(f'{output_folder}/{file_name}.txt', 'w')
     f.write('\n'.join(features.loc[:, selector.support_].columns.to_list()))
     f.close()
+
+
