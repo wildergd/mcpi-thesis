@@ -12,6 +12,8 @@ import warnings
 
 warnings.filterwarnings('ignore')
 
+import random
+import numpy as np
 import pandas as pd
 from library.datasets import get_dataframe_summarized, standarize, StandarizeMethod
 from library.depresjon import get_measured_days, read_activity_dataset, read_scores_dataset
@@ -32,8 +34,13 @@ summarize_method = args['summarize_method']
 standarize_method = args['standarize_method']
 remove_outliers = args['standarize_remove_outliers']
 compute_features = ComputeFeatures.MINIMAL if args['compute_features'].lower() == 'minimal' else ComputeFeatures.ALL
+seed = 123
 
 if __name__ == '__main__':
+    # set seed for reproducibility
+    random.seed(seed)
+    np.random.seed(seed)
+
     # datasets path
     DATASETS_PATH = path.realpath(path.join(SCRIPT_DIR, '..', '..', 'dataset'))
     output_folder = f'{DATASETS_PATH}/transformed/classification'
@@ -76,7 +83,7 @@ if __name__ == '__main__':
     features_dataset['condition'] = features_dataset.index.map(lambda value: int(value.startswith('condition')))
     
     features_dataset.to_csv(
-        f'{output_folder}/features_{compute_features}_{frequency}_{summarize_method}_standarized_{standarize_method}_outliers_{remove_outliers}.csv',
+        f'{output_folder}/features_{args["compute_features"].lower()}_{frequency}_{summarize_method}_standarized_{standarize_method}_outliers_{remove_outliers}.csv',
         index=True,
         index_label='number'
     )

@@ -35,7 +35,7 @@ def get_test_size(value: str) -> float:
 csv_file = args["file"]
 use_adversarial_validation_method = args["use_adversarial_validation"]
 split_test_size = get_test_size(args["size"])
-seed = 123
+seed = 1100
 
 if __name__ == '__main__':
     if csv_file is None:
@@ -51,27 +51,22 @@ if __name__ == '__main__':
     df = pd.read_csv(path.abspath(csv_file), index_col='number')
 
     # split
-    if use_adversarial_validation_method == 'yes':
-        train, test = split_dataset_adversarial_validation(
-            df,
-            predict_column = 'condition',
-            test_size = split_test_size,
-            random_state = seed
-        )
-    else:
-        train, test = split_dataset(
-            df,
-            predict_column = 'condition',
-            test_size = split_test_size,
-            random_state = seed
-        )
-        
+    train, test, noisy_features = split_dataset(
+        df,
+        predict_column = 'condition',
+        test_size = split_test_size,
+        adversarial_validation = use_adversarial_validation_method == 'yes',
+        random_state = seed
+    )
+    
+    # export datasets
     test_size = int(split_test_size * 100)
     train_size = 100 - test_size
     split_folder_info = f'{train_size}-{test_size}'
+    adversatial_validation_info = '_av' if use_adversarial_validation_method == 'yes' else ''
     
-    train_output_path = f'{DATASETS_PATH}/transformed/classification/train/{split_folder_info}'
-    test_output_path = f'{DATASETS_PATH}/transformed/classification/test/{split_folder_info}'
+    train_output_path = f'{DATASETS_PATH}/transformed/classification/train/{split_folder_info}{adversatial_validation_info}'
+    test_output_path = f'{DATASETS_PATH}/transformed/classification/test/{split_folder_info}{adversatial_validation_info}'
     
     if not path.exists(train_output_path):
         makedirs(train_output_path)
