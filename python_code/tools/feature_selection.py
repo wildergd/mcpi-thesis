@@ -13,7 +13,7 @@ import random
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.linear_model import LogisticRegression, LogisticRegressionCV
+from sklearn.linear_model import LogisticRegressionCV
 from genetic_selection import GeneticSelectionCV
 
 pd.options.display.precision = 4
