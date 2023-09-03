@@ -21,15 +21,15 @@ warnings.filterwarnings('ignore')
 
 # Parse command line arguments
 parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
-parser.add_argument("-f", "--file", help="Path to dataset file (CSV format)")
-parser.add_argument("-m", "--method", help="ML method. One of: rlo, ranforest, svm.")
-parser.add_argument("-mf", "--max-features", default="20", help="Number of features to be selected. Defaults to 20")
+parser.add_argument('-f', '--file', help='Path to dataset file (CSV format)', required = True)
+parser.add_argument('-m', '--method', help='ML method. One of: rlo, ranforest, svm.')
+parser.add_argument('-mf', '--max-features', default='20', help='Number of features to be selected. Defaults to 20')
 args = vars(parser.parse_args())
 
 # Set up parameters
-csv_file = args["file"]
-classification_method = args["method"]
-max_feaures = int(args["max_features"]) if args["max_features"].isdigit() else 20
+csv_file = args['file']
+classification_method = args['method']
+max_feaures = int(args['max_features']) if args['max_features'].isdigit() else 20
 seed = 90
 
 def get_estimator(
@@ -39,7 +39,7 @@ def get_estimator(
 ):
     if method == 'rlo':
         return LogisticRegressionCV(
-            solver="lbfgs",
+            solver='lbfgs',
             cv = 5,
             random_state = random_state
         )
@@ -87,7 +87,7 @@ if __name__ == '__main__':
         estimator,
         cv = 5,
         verbose = 1,
-        scoring = "roc_auc",
+        scoring = 'roc_auc',
         max_features = max_feaures,
         crossover_proba = 0.5,
         mutation_proba = 0.2,

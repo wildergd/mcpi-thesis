@@ -17,9 +17,9 @@ warnings.filterwarnings('ignore')
 
 # Parse command line arguments
 parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
-parser.add_argument("-f", "--file", help="Path to dataset file (CSV format)")
-parser.add_argument("-s", "--size", default="80:20", help="split ration (train:test). Defaults to 80:20")
-parser.add_argument("-av", "--use-adversarial-validation", default="no", help="Use adversarial validation (yes|no). Default: no")
+parser.add_argument('-f', '--file', help='Path to dataset file (CSV format)', required = True)
+parser.add_argument('-s', '--size', default='80:20', help='split ration (train:test). Defaults to 80:20')
+parser.add_argument('-av', '--use-adversarial-validation', default='no', help='Use adversarial validation (yes|no). Default: no')
 args = vars(parser.parse_args())
 
 def get_test_size(value: str) -> float:
@@ -32,9 +32,9 @@ def get_test_size(value: str) -> float:
         return float_val if float_val < 1 else float_val / 100
 
 # Set up parameters
-csv_file = args["file"]
-use_adversarial_validation_method = args["use_adversarial_validation"]
-split_test_size = get_test_size(args["size"])
+csv_file = args['file']
+use_adversarial_validation_method = args['use_adversarial_validation']
+split_test_size = get_test_size(args['size'])
 seed = 1100
 
 if __name__ == '__main__':
