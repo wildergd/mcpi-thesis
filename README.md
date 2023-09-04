@@ -25,6 +25,10 @@ $ scripts/feature_selection.sh
 
 ### Training and testing models
 
+```bash
+$ scripts/build_classification_models.sh
+```
+
 ## Forecasting activity
 
 
