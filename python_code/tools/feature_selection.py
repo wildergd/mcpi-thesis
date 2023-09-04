@@ -12,10 +12,8 @@ import warnings
 import random
 import numpy as np
 import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.linear_model import LogisticRegressionCV
-from sklearn.neighbors import NearestCentroid
 from genetic_selection import GeneticSelectionCV
+from library.classifiers import get_estimator
 
 pd.options.display.precision = 4
 warnings.filterwarnings('ignore')
@@ -23,7 +21,12 @@ warnings.filterwarnings('ignore')
 # Parse command line arguments
 parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
 parser.add_argument('-f', '--file', help='Path to dataset file (CSV format)', required = True)
-parser.add_argument('-m', '--method', default = 'nearcent', help='ML method. One of: rlo, ranforest, svm, nearcent. Default nearcent')
+parser.add_argument(
+    '-m', '--method',
+    help='ML method. One of: rlo, rf, svm, sgd, nearcent, adaboost.',
+    default = 'nearcent',
+    choices = ['rlo', 'rf', 'svm', 'sgd', 'nearcent', 'adaboost']
+)
 parser.add_argument('-mf', '--max-features', default='20', help='Number of features to be selected. Defaults to 20')
 args = vars(parser.parse_args())
 
@@ -33,35 +36,13 @@ classification_method = args['method']
 max_features = int(args['max_features']) if args['max_features'].isdigit() else 20
 seed = 90
 
-def get_estimator(
-    method: str,
-    random_state: int = None,
-    max_features: int = 20
-):
-    if method == 'rlo':
-        return LogisticRegressionCV(
-            solver='lbfgs',
-            cv = 5,
-            random_state = random_state
-        )
-
-    if method == 'rf':
-        return RandomForestClassifier(
-            bootstrap = False,
-            max_features = max_features,
-            n_jobs = -1,
-            random_state = random_state
-        )
-        
-    return NearestCentroid()
-
 if __name__ == '__main__':
     if csv_file is None or classification_method is None:
         print()
         parser.print_usage()
         print()
         quit()
-
+    
     # Set seed for reproducibility
     random.seed(seed)
     np.random.seed(seed)

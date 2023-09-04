@@ -18,6 +18,7 @@ from sklearn.metrics import roc_curve, auc, confusion_matrix, classification_rep
 from sklearn.metrics.pairwise import pairwise_distances
 from sklearn.neighbors import NearestCentroid
 from sklearn.utils.extmath import softmax
+from library.classifiers import get_estimator
 
 pd.options.display.precision = 4
 warnings.filterwarnings('ignore')
@@ -29,9 +30,9 @@ parser.add_argument('-tf', '--train-file', help='Path to dataset file containing
 parser.add_argument('-vf', '--test-file', help='Path to dataset file containing train data (CSV format)', required = True)
 parser.add_argument(
     '-cm', '--classification-model',
-    help='ML method. One of: rlo, OPTARG, svm, nearcent.',
+    help='ML method. One of: rlo, rf, svm, sgd, nearcent, adaboost.',
     default = 'nearcent',
-    choices = ['rlo', 'rf', 'svm', 'nearcent']
+    choices = ['rlo', 'rf', 'svm', 'sgd', 'nearcent', 'adaboost']
 )
 args = vars(parser.parse_args())
 
@@ -41,28 +42,6 @@ train_file = args['train_file']
 test_file = args['test_file']
 classification_model = args['classification_model']
 seed = 90
-
-def get_estimator(
-    method: str,
-    random_state: int = None,
-):
-    if method == 'rlo':
-        return LogisticRegressionCV(
-            solver='lbfgs',
-            cv = 5,
-            tol = 0.05,
-            random_state = random_state
-        )
-
-    if method == 'rf':
-        return RandomForestClassifier(
-            bootstrap = False,
-            n_jobs = -1,
-            max_features = None,
-            random_state = random_state
-        )
-        
-    return NearestCentroid()
 
 def predict_proba(model, features):
     if isinstance(model, NearestCentroid):
@@ -88,7 +67,7 @@ if __name__ == '__main__':
     target_train = df_train['condition']
     
     # create model
-    model = get_estimator(classification_model, random_state = seed)
+    model = get_estimator(classification_model, random_state = seed, max_features = None)
     model.fit(features_train, target_train)
     
     # model summary
