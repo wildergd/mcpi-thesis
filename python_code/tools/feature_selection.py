@@ -14,6 +14,7 @@ import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegressionCV
+from sklearn.neighbors import NearestCentroid
 from genetic_selection import GeneticSelectionCV
 
 pd.options.display.precision = 4
@@ -22,14 +23,14 @@ warnings.filterwarnings('ignore')
 # Parse command line arguments
 parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
 parser.add_argument('-f', '--file', help='Path to dataset file (CSV format)', required = True)
-parser.add_argument('-m', '--method', help='ML method. One of: rlo, ranforest, svm.')
+parser.add_argument('-m', '--method', default = 'nearcent', help='ML method. One of: rlo, ranforest, svm, nearcent. Default nearcent')
 parser.add_argument('-mf', '--max-features', default='20', help='Number of features to be selected. Defaults to 20')
 args = vars(parser.parse_args())
 
 # Set up parameters
 csv_file = args['file']
 classification_method = args['method']
-max_feaures = int(args['max_features']) if args['max_features'].isdigit() else 20
+max_features = int(args['max_features']) if args['max_features'].isdigit() else 20
 seed = 90
 
 def get_estimator(
@@ -47,12 +48,12 @@ def get_estimator(
     if method == 'rf':
         return RandomForestClassifier(
             bootstrap = False,
-            max_features = max_feaures,
+            max_features = max_features,
             n_jobs = -1,
             random_state = random_state
         )
         
-    return None
+    return NearestCentroid()
 
 if __name__ == '__main__':
     if csv_file is None or classification_method is None:
@@ -74,7 +75,8 @@ if __name__ == '__main__':
     # get estimator
     estimator = get_estimator(
         method = classification_method,
-        random_state = seed 
+        random_state = seed,
+        max_features = max_features
     )
     
     df = df.drop('number', axis = 1)
@@ -88,7 +90,7 @@ if __name__ == '__main__':
         cv = 5,
         verbose = 1,
         scoring = 'roc_auc',
-        max_features = max_feaures,
+        max_features = max_features,
         crossover_proba = 0.5,
         mutation_proba = 0.2,
         crossover_independent_proba = 0.5,
@@ -101,7 +103,7 @@ if __name__ == '__main__':
 
     # datasets path
     DATASETS_PATH = path.realpath(path.join(SCRIPT_DIR, '..', '..', 'dataset'))
-    output_folder = f'{DATASETS_PATH}/features/{max_feaures}-features/{classification_method}'
+    output_folder = f'{DATASETS_PATH}/features/{max_features}-features/{classification_method}'
     file_name, _ = path.splitext(path.basename(path.abspath(csv_file)))
     
     if not path.exists(output_folder):

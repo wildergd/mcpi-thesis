@@ -15,6 +15,9 @@ import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegressionCV
 from sklearn.metrics import roc_curve, auc, confusion_matrix, classification_report
+from sklearn.metrics.pairwise import pairwise_distances
+from sklearn.neighbors import NearestCentroid
+from sklearn.utils.extmath import softmax
 
 pd.options.display.precision = 4
 warnings.filterwarnings('ignore')
@@ -26,9 +29,9 @@ parser.add_argument('-tf', '--train-file', help='Path to dataset file containing
 parser.add_argument('-vf', '--test-file', help='Path to dataset file containing train data (CSV format)', required = True)
 parser.add_argument(
     '-cm', '--classification-model',
-    help='ML method. One of: rlo, ranforest, svm.',
-    default = 'rlo',
-    choices = ['rlo', 'ranforest', 'svm', 'nearcent']
+    help='ML method. One of: rlo, OPTARG, svm, nearcent.',
+    default = 'nearcent',
+    choices = ['rlo', 'rf', 'svm', 'nearcent']
 )
 args = vars(parser.parse_args())
 
@@ -59,7 +62,15 @@ def get_estimator(
             random_state = random_state
         )
         
-    return None
+    return NearestCentroid()
+
+def predict_proba(model, features):
+    if isinstance(model, NearestCentroid):
+        distances = pairwise_distances(features, model.centroids_, metric=model.metric)
+        probs = softmax(distances)
+    else: 
+        probs = model.predict_proba(features)
+    return probs
 
 if __name__ == '__main__':
     # datasets path
@@ -88,7 +99,7 @@ if __name__ == '__main__':
     print('     Train dataset results')
     print('-'*55)
     print()
-    train_pred_probs = model.predict_proba(features_train)
+    train_pred_probs = predict_proba(model, features_train)
     train_pred = model.predict(features_train)
 
     fpr, tpr, thresholds = roc_curve(target_train, train_pred_probs[:,1], drop_intermediate = True)
@@ -117,7 +128,7 @@ if __name__ == '__main__':
     print('     Test dataset results')
     print('-'*55)
     print()
-    test_pred_probs = model.predict_proba(features_test)
+    test_pred_probs = predict_proba(model, features_test)
     test_pred = model.predict(features_test)
 
     fpr, tpr, thresholds = roc_curve(target_test, test_pred_probs[:,1], drop_intermediate = True)
