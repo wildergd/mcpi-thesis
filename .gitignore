@@ -2,4 +2,5 @@ backups
 tests
 dataset/features
 dataset/transformed
+dataset/results
 r_code/saved_data
