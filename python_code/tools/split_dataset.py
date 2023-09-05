@@ -37,19 +37,20 @@ use_adversarial_validation_method = args['use_adversarial_validation']
 split_test_size = get_test_size(args['size'])
 seed = 1100
 
-if __name__ == '__main__':
-    if csv_file is None:
-        print()
-        parser.print_usage()
-        print()
-        quit()
-        
+if __name__ == '__main__':        
     # datasets path
     DATASETS_PATH = path.realpath(path.join(SCRIPT_DIR, '..', '..', 'dataset'))
     
     # read full dataset
     df = pd.read_csv(path.abspath(csv_file), index_col='number')
 
+    print('='*100)
+    print(' Dataset File: {}'.format(path.basename(csv_file).split('.')[0]))
+    print(f' Test Split Size: {split_test_size}')
+    print(f' Use Adversarial Validation: {use_adversarial_validation_method}')
+    print('='*100)
+    print()
+    
     # split
     train, test, noisy_features = split_dataset(
         df,
@@ -58,6 +59,11 @@ if __name__ == '__main__':
         adversarial_validation = use_adversarial_validation_method == 'yes',
         random_state = seed
     )
+    
+    print()
+    print(f'Train dataset shape: {train.shape}')
+    print(f'Test dataset shape: {test.shape}')
+    print()
     
     # export datasets
     test_size = int(split_test_size * 100)

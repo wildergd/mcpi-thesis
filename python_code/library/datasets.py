@@ -139,17 +139,16 @@ def split_dataset_adversarial_validation(
     
         iter += 1
     
-    features_new = tmp_df.drop(['is_test'], axis = 1)
+    features_new = tmp_df.drop('is_test', axis = 1)
     features_new['proba'] = model.predict_proba(features)[:,1]
     features_new['target'] = target
-    
-    features_new = features_new[features_new['target'] == 0]
-        
+            
     nrows = features_new.shape[0]
-    test_data = features_new.sort_values(by='proba',ascending=False)[:int(nrows * test_size)]
-    train_data = features_new.sort_values(by='proba',ascending=False)[int(nrows * test_size):]
+    features_new = features_new.sort_values(by='proba',ascending=False)
+    test_data = features_new[:int(nrows * test_size)]
+    train_data = features_new[int(nrows * test_size):]
     
-    train_data = test_data.drop(['proba', 'target'], axis = 1)
+    train_data = train_data.drop(['proba', 'target'], axis = 1)
     train_data['condition'] = train_data.index.map(lambda value: int(value.startswith('condition')))
     
     test_data = test_data.drop(['proba', 'target'], axis = 1)

@@ -20,7 +20,12 @@ $ scripts/split_datasets.sh
 ### Feature extraction
 
 ```bash
-$ scripts/feature_selection.sh
+$ scripts/feature_selection_all.sh -m nearcent
+$ scripts/feature_selection_all.sh -m rlo
+$ scripts/feature_selection_all.sh -m svm
+$ scripts/feature_selection_all.sh -m sgd
+$ scripts/feature_selection_all.sh -m rf
+$ scripts/feature_selection_all.sh -m adaboost
 ```
 
 ### Training and testing models

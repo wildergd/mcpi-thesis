@@ -11,6 +11,7 @@ from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 import warnings
 import random
 import numpy as np
+from re import match
 import pandas as pd
 from genetic_selection import GeneticSelectionCV
 from library.classifiers import get_estimator
@@ -28,21 +29,23 @@ parser.add_argument(
     choices = ['rlo', 'rf', 'svm', 'sgd', 'nearcent', 'adaboost']
 )
 parser.add_argument('-mf', '--max-features', default='20', help='Number of features to be selected. Defaults to 20')
+parser.add_argument('-to', '--train-only', default='no', help='Use only the train dataset', choices = ['yes', 'no'])
 args = vars(parser.parse_args())
 
 # Set up parameters
 csv_file = args['file']
 classification_method = args['method']
 max_features = int(args['max_features']) if args['max_features'].isdigit() else 20
+train_only = args['train_only'] == 'yes'
 seed = 90
 
-if __name__ == '__main__':
-    if csv_file is None or classification_method is None:
-        print()
-        parser.print_usage()
-        print()
-        quit()
-    
+def extract_cv_split(file_path: str):
+    split_part = path.split(file_path)[1]
+    if match(r'^\d{2}-\d{2}(_av)?$', split_part):
+        return split_part 
+    return None
+
+if __name__ == '__main__':    
     # Set seed for reproducibility
     random.seed(seed)
     np.random.seed(seed)
@@ -84,7 +87,10 @@ if __name__ == '__main__':
 
     # datasets path
     DATASETS_PATH = path.realpath(path.join(SCRIPT_DIR, '..', '..', 'dataset'))
-    output_folder = f'{DATASETS_PATH}/features/{max_features}-features/{classification_method}'
+    output_folder = f'{DATASETS_PATH}/features/all/{max_features}-features/{classification_method}'
+    if train_only:
+        train_split = extract_cv_split(path.dirname(csv_file))   
+        output_folder = f'{DATASETS_PATH}/features/train/{train_split}/{max_features}-features/{classification_method}'
     file_name, _ = path.splitext(path.basename(path.abspath(csv_file)))
     
     if not path.exists(output_folder):
