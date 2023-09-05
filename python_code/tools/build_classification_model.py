@@ -23,7 +23,7 @@ warnings.filterwarnings('ignore')
 
 # Parse command line arguments
 parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
-parser.add_argument('-ff', '--features-file', help='Path to dataset file containing train data (CSV format)', required = True)
+parser.add_argument('-ff', '--features-file', help='Path to dataset file containing train data (Regular TXT file)', required = True)
 parser.add_argument('-tf', '--train-file', help='Path to dataset file containing train data (CSV format)', required = True)
 parser.add_argument('-vf', '--test-file', help='Path to dataset file containing train data (CSV format)', required = True)
 parser.add_argument(
