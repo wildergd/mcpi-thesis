@@ -61,6 +61,16 @@ def extract_cv_split(file_path: str):
 if __name__ == '__main__':
     # datasets path
     DATASETS_PATH = path.realpath(path.join(SCRIPT_DIR, '..', '..', 'dataset'))
+    
+    # get some general info
+    dataset_name = path.basename(train_file).split('.')[0]
+    cv_split = extract_cv_split(path.dirname(train_file))    
+
+    print('='*100)
+    print(f' DATASET: {dataset_name}')
+    print(f' MODEL: {classification_model}')
+    print(f' SPLIT_SET: {cv_split}')
+    print('='*100)
 
     # read features    
     f = open(path.abspath(features_file), 'r')
@@ -82,7 +92,7 @@ if __name__ == '__main__':
     # predictions train
     print()
     print('-'*55)
-    print('     Train dataset results')
+    print(' TRAIN RESULTS')
     print('-'*55)
     print()
     train_pred_probs = predict_proba(model, features_train)
@@ -92,10 +102,11 @@ if __name__ == '__main__':
     roc_auc = auc(fpr, tpr)
 
     accuracy = 1 - float(np.sum(np.abs(train_pred_probs[:,1] - target_train))) / train_pred_probs[:,1].size
+    cm_train = confusion_matrix(target_train, train_pred, labels=[1, 0])
     print(classification_report(target_train, model.predict(features_train)))
     print(
         pd.DataFrame(
-            confusion_matrix(target_train, train_pred, labels=[1, 0]), 
+            cm_train, 
             index=['true:1', 'true:0'], 
             columns=['pred:1', 'pred:0']
         )
@@ -111,7 +122,7 @@ if __name__ == '__main__':
     print()
     print()
     print('-'*55)
-    print('     Test dataset results')
+    print(' TEST RESULTS')
     print('-'*55)
     print()
     test_pred_probs = predict_proba(model, features_test)
@@ -121,11 +132,11 @@ if __name__ == '__main__':
     roc_auc = auc(fpr, tpr)
 
     accuracy = 1 - float(np.sum(np.abs(test_pred_probs[:,1] - target_test))) / test_pred_probs[:,1].size
-    print(classification_report(target_test, model.predict(features_test)))
-    
+    cm_test = confusion_matrix(target_test, test_pred, labels=[1, 0])
+    print(classification_report(target_test, model.predict(features_test)))    
     print(
         pd.DataFrame(
-            confusion_matrix(target_test, test_pred, labels=[1, 0]), 
+            cm_test, 
             index=['true:1', 'true:0'], 
             columns=['pred:1', 'pred:0']
         )
@@ -134,9 +145,6 @@ if __name__ == '__main__':
     print()
 
     # generate model reports
-    dataset_name = path.basename(train_file).split('.')[0]
-    cv_split = extract_cv_split(path.dirname(train_file))
-    
     results_output_folder = f'{DATASETS_PATH}/results'
     
     df_results = pd.DataFrame(
@@ -150,7 +158,8 @@ if __name__ == '__main__':
             'sensitivity',
             'specificity',
             'precision',
-            'f1-score'
+            'f1-score',
+            'CM(TP:TN:FP:FN)'
         ]
     )
     
@@ -179,6 +188,7 @@ if __name__ == '__main__':
         'specificity': train_results['0']['recall'],
         'precision': train_results['weighted avg']['precision'],
         'f1-score': train_results['weighted avg']['f1-score'],
+        'CM(TP:TN:FP:FN)': f'{cm_train[0][0]}:{cm_train[1][1]}:{cm_train[1][0]}:{cm_train[0][1]}'
     }
 
     # export test results
@@ -198,6 +208,7 @@ if __name__ == '__main__':
         'specificity': test_results['0']['recall'],
         'precision': test_results['weighted avg']['precision'],
         'f1-score': test_results['weighted avg']['f1-score'],
+        'CM(TP:TN:FP:FN)': f'{cm_test[0][0]}:{cm_test[1][1]}:{cm_test[1][0]}:{cm_test[0][1]}'
     }
     
     # write report to file
