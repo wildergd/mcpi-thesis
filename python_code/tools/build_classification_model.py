@@ -9,12 +9,9 @@ sys.dont_write_bytecode = True
 
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 import warnings
-import random
 import re
 import numpy as np
 import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.linear_model import LogisticRegressionCV
 from sklearn.metrics import roc_curve, auc, confusion_matrix, classification_report
 from sklearn.metrics.pairwise import pairwise_distances
 from sklearn.neighbors import NearestCentroid
