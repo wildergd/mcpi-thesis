@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import sys
-from os import path
+from os import path, makedirs
 
 SCRIPT_DIR = path.dirname(path.abspath(__file__))
 sys.path.append(path.dirname(SCRIPT_DIR))
@@ -10,6 +10,7 @@ sys.dont_write_bytecode = True
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 import warnings
 import random
+import re
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
@@ -50,6 +51,12 @@ def predict_proba(model, features):
     else: 
         probs = model.predict_proba(features)
     return probs
+
+def extract_cv_split(file_path: str):
+    split_part = path.split(file_path)[1]
+    if re.match(r'^\d{2}-\d{2}(_av)?$', split_part):
+        return split_part 
+    return None
 
 if __name__ == '__main__':
     # datasets path
@@ -125,3 +132,80 @@ if __name__ == '__main__':
     )
     print()
     print()
+
+    # generate model reports
+    dataset_name = path.basename(train_file).split('.')[0]
+    cv_split = extract_cv_split(path.dirname(train_file))
+    
+    results_output_folder = f'{DATASETS_PATH}/results'
+    
+    df_results = pd.DataFrame(
+        columns = [
+            'dataset',
+            'split',
+            'model',
+            'num_features',
+            'stage',
+            'accuracy',
+            'sensitivity',
+            'specificity',
+            'precision',
+            'f1-score'
+        ]
+    )
+    
+    # check if report exists
+    if path.isfile(f'{results_output_folder}/classification_models_scores_train_test.csv'):
+        df_results = pd.read_csv(f'{results_output_folder}/classification_models_scores_train_test.csv')
+    
+    # remove existing rows for current dataset, model and split
+    filter = (df_results['dataset'] == dataset_name) & (df_results['model'] == classification_model) & (df_results['split'] == cv_split)
+    df_results = df_results.drop(df_results[filter].index).reset_index(drop = True)
+    
+    # export train results
+    train_results = classification_report(
+        target_train,
+        model.predict(features_train),
+        output_dict = True
+    )
+    df_results.loc[len(df_results)] = {
+        'dataset': dataset_name,
+        'split': cv_split,
+        'model': classification_model,
+        'num_features': len(features_names),
+        'stage': 'train',
+        'accuracy': train_results['accuracy'],
+        'sensitivity': train_results['1']['recall'],
+        'specificity': train_results['0']['recall'],
+        'precision': train_results['weighted avg']['precision'],
+        'f1-score': train_results['weighted avg']['f1-score'],
+    }
+
+    # export test results
+    test_results = classification_report(
+        target_test,
+        model.predict(features_test),
+        output_dict = True
+    )
+    df_results.loc[len(df_results)] = {
+        'dataset': dataset_name,
+        'split': cv_split,
+        'model': classification_model,
+        'num_features': len(features_names),
+        'stage': 'test',
+        'accuracy': test_results['accuracy'],
+        'sensitivity': test_results['1']['recall'],
+        'specificity': test_results['0']['recall'],
+        'precision': test_results['weighted avg']['precision'],
+        'f1-score': test_results['weighted avg']['f1-score'],
+    }
+    
+    # write report to file
+    if not path.exists(results_output_folder) or not path.isdir(results_output_folder):
+        makedirs(results_output_folder)
+    
+    df_results.to_csv(
+        f'{results_output_folder}/classification_models_scores_train_test.csv',
+        index = False,
+        float_format = '%.4f'
+    )
