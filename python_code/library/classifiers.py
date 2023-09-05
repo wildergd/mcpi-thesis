@@ -1,7 +1,7 @@
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 from sklearn.linear_model import LogisticRegressionCV, SGDClassifier
 from sklearn.neighbors import NearestCentroid
-from sklearn.svm import SVC, SVR, LinearSVC, LinearSVR
+from sklearn.svm import SVC
 
 def get_estimator(
     method: str = 'nearcent',
@@ -10,7 +10,7 @@ def get_estimator(
 ):
     if method == 'rlo':
         return LogisticRegressionCV(
-            solver='lbfgs',
+            solver='liblinear',
             class_weight = 'balanced',
             cv = 5,
             tol = 0.05,
