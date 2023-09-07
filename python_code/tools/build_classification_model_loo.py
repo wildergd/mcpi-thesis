@@ -1,0 +1,362 @@
+#!/usr/bin/env python
+
+import sys
+from os import path, makedirs
+
+SCRIPT_DIR = path.dirname(path.abspath(__file__))
+sys.path.append(path.dirname(SCRIPT_DIR))
+sys.dont_write_bytecode = True
+
+from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+import warnings
+import random
+import re
+import numpy as np
+import pandas as pd
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegressionCV
+from sklearn.metrics import accuracy_score, roc_curve, auc, confusion_matrix, classification_report, roc_auc_score
+from sklearn.metrics.pairwise import pairwise_distances
+from sklearn.model_selection import LeaveOneOut, KFold, cross_val_score, cross_validate
+from sklearn.neighbors import NearestCentroid
+from sklearn.utils.extmath import softmax
+from library.classifiers import get_estimator
+
+pd.options.display.precision = 4
+warnings.filterwarnings('ignore')
+
+# Parse command line arguments
+parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
+parser.add_argument('-ff', '--features-file', help='Path to dataset file containing train data (TXT file)', required = True)
+parser.add_argument('-tf', '--train-file', help='Path to dataset file containing train data (CSV format)', required = True)
+parser.add_argument('-vf', '--test-file', help='Path to dataset file containing train data (CSV format)')
+parser.add_argument(
+    '-cm', '--classification-model',
+    help='ML method. One of: rlo, rf, svm, sgd, nearcent, adaboost.',
+    default = 'nearcent',
+    choices = ['rlo', 'rf', 'svm', 'sgd', 'nearcent', 'adaboost']
+)
+args = vars(parser.parse_args())
+
+# Set up parameters
+features_file = args['features_file']
+train_file = args['train_file']
+test_file = args['test_file']
+classification_model = args['classification_model']
+seed = 90
+
+def predict_proba(model, features):
+    if isinstance(model, NearestCentroid):
+        distances = pairwise_distances(features, model.centroids_, metric=model.metric)
+        return softmax(distances)
+
+    return model.predict_proba(features)
+
+def extract_cv_split(file_path: str):
+    split_part = path.split(file_path)[1]
+    if re.match(r'^\d{2}-\d{2}(_av)?$', split_part):
+        return split_part 
+    return None
+
+if __name__ == '__main__':
+    # datasets path
+    DATASETS_PATH = path.realpath(path.join(SCRIPT_DIR, '..', '..', 'dataset'))
+    
+    # get some general info
+    dataset_name = path.basename(train_file).split('.')[0]
+    
+    print('='*100)
+    print(f' DATASET: {dataset_name}')
+    print(f' MODEL: {classification_model}')
+    print('='*100)
+
+    # read features    
+    f = open(path.abspath(features_file), 'r')
+    features_names = [line.strip() for line in f.readlines()]
+    f.close()
+
+    # read dataset
+    df = pd.read_csv(path.abspath(train_file)).drop('number', axis = 1)
+    
+    # define features and target variables
+    features = df[features_names]
+    target = df['condition']
+    
+    # create model
+    model = get_estimator(
+        classification_model,
+        random_state = seed,
+        max_features = None
+    ) 
+    
+    # define cross-validation method to use
+    cv = LeaveOneOut()
+
+    # perform cross-validation
+    y_target = []
+    y_pred_probs = []
+    y_preds = []
+    for train_ix, test_ix in cv.split(features):
+        # split dataset
+        features_train, features_test = features.loc[train_ix, :], features.loc[test_ix, :]
+        target_train, target_test = target.loc[train_ix], target.loc[test_ix]
+        
+        # fit model
+        model.fit(features_train, target_train)
+        pred_probs = predict_proba(model, features_test)
+        y_pred = model.predict(features_test)
+
+        y_target.append(target[test_ix])
+        y_preds.append(y_pred)
+        y_pred_probs.append(pred_probs[:,1])
+    
+    y_target = np.array(y_target)
+    y_preds = np.array(y_preds)
+    y_pred_probs = np.array(y_pred_probs)
+    
+    train_pred = model.predict(features_train)
+
+    fpr, tpr, thresholds = roc_curve(y_target, y_pred_probs, drop_intermediate = True)
+    roc_auc = auc(fpr, tpr)
+
+    accuracy = 1 - float(np.sum(np.abs(y_pred_probs - y_target))) / y_pred_probs.size
+    cm = confusion_matrix(y_target, y_preds, labels=[1, 0])
+    print(classification_report(target, model.predict(features)))
+    print(
+        pd.DataFrame(
+            cm, 
+            index=['true:1', 'true:0'], 
+            columns=['pred:1', 'pred:0']
+        )
+    )
+    
+    print()
+
+    # generate model reports
+    results_output_folder = f'{DATASETS_PATH}/results'
+    results_output_file_path = f'{results_output_folder}/classification_models_scores_llo.csv'
+    
+    df_results = pd.DataFrame(
+        columns = [
+            'dataset',
+            'model',
+            'num_features',
+            'accuracy',
+            'sensitivity',
+            'specificity',
+            'precision',
+            'f1-score',
+            'CM(TP:TN:FP:FN)'
+        ]
+    )
+    
+    # check if report exists
+    if path.exists(results_output_file_path) and path.isfile(results_output_file_path):
+        df_results = pd.read_csv(results_output_file_path)
+    
+    # remove existing rows for current dataset, model and split
+    filter = (df_results['dataset'] == dataset_name) & (df_results['model'] == classification_model)
+    df_results = df_results.drop(df_results[filter].index).reset_index(drop = True)
+    
+    # export results
+    results = classification_report(
+        target,
+        model.predict(features),
+        output_dict = True
+    )
+    
+    df_results.loc[len(df_results)] = {
+        'dataset': dataset_name,
+        'model': classification_model,
+        'num_features': len(features_names),
+        'accuracy': results['accuracy'],
+        'sensitivity': results['1']['recall'],
+        'specificity': results['0']['recall'],
+        'precision': results['weighted avg']['precision'],
+        'f1-score': results['weighted avg']['f1-score'],
+        'CM(TP:TN:FP:FN)': f'{cm[0][0]}:{cm[1][1]}:{cm[1][0]}:{cm[0][1]}'
+    }
+    
+    # write report to file
+    if not path.exists(results_output_folder) or not path.isdir(results_output_folder):
+        makedirs(results_output_folder)
+    
+    df_results.to_csv(
+        path.abspath(results_output_file_path),
+        index = False,
+        float_format = '%.4f'
+    )
+
+    # # valildate model    
+    # scores2 = cross_validate(
+    #     model,
+    #     X = features,
+    #     y = target,
+    #     scoring = 'accuracy',
+    #     cv = cv,
+    #     n_jobs=-1
+    # )
+    # y_pred = target.copy()
+    # y_pred[scores2['test_score'] == 0] = target[scores2['test_score'] == 0].apply(lambda v: 1 - v)
+    
+    # # # print(classification_report(target_test, model.predict(features_test)))    
+    # cm_test = confusion_matrix(target, y_pred, labels=[1, 0])
+    # print(
+    #     pd.DataFrame(
+    #         cm_test, 
+    #         index=['true:1', 'true:0'], 
+    #         columns=['pred:1', 'pred:0']
+    #     )
+    # )
+    # print()
+    
+    # roc_auc_scores = []
+    # for train_ix, test_ix in cv.split(features):
+    #     # split dataset
+    #     features_train, features_test = features.loc[train_ix, :], features.loc[test_ix, :]
+    #     target_train, target_test = target.loc[train_ix], target.loc[test_ix]
+        
+    #     # fit model
+    #     model.fit(features_train, target_train)
+    
+    #     # get scores for split    
+    #     test_pred_probs = model.predict(features_test)
+    #     accuracy = accuracy_score(target_test, test_pred_probs)
+    #     roc_auc_scores.append(accuracy)
+    
+    # mean_roc_auc = np.mean(roc_auc_scores)
+    
+    # print(mean_roc_auc)
+        
+    
+    # # model summary
+    # print()
+    # print('-'*55)
+    # print(' RESULTS')
+    # print('-'*55)
+    # print()
+    # pred_probs = predict_proba(model, features)
+    # pred = model.predict(features)
+
+    # fpr, tpr, thresholds = roc_curve(target, pred_probs[:,1], drop_intermediate = True)
+    # roc_auc = auc(fpr, tpr)
+
+    # accuracy = 1 - float(np.sum(np.abs(train_pred_probs[:,1] - target_train))) / train_pred_probs[:,1].size
+    # cm_train = confusion_matrix(target_train, train_pred, labels=[1, 0])
+    # print(classification_report(target_train, model.predict(features_train)))
+    # print(
+    #     pd.DataFrame(
+    #         cm_train, 
+    #         index=['true:1', 'true:0'], 
+    #         columns=['pred:1', 'pred:0']
+    #     )
+    # )
+    
+    # # read test dataset
+    # df_test = pd.read_csv(path.abspath(test_file), index_col='number').reset_index(drop = True)
+    
+    # features_test = df_test[features_names]
+    # target_test = df_test['condition']
+
+    # # predictions test
+    # print()
+    # print()
+    # print('-'*55)
+    # print(' TEST RESULTS')
+    # print('-'*55)
+    # print()
+    # test_pred_probs = predict_proba(model, features_test)
+    # test_pred = model.predict(features_test)
+
+    # fpr, tpr, thresholds = roc_curve(target_test, test_pred_probs[:,1], drop_intermediate = True)
+    # roc_auc = auc(fpr, tpr)
+
+    # accuracy = 1 - float(np.sum(np.abs(test_pred_probs[:,1] - target_test))) / test_pred_probs[:,1].size
+    # cm_test = confusion_matrix(target_test, test_pred, labels=[1, 0])
+    # print(classification_report(target_test, model.predict(features_test)))    
+    # print(
+    #     pd.DataFrame(
+    #         cm_test, 
+    #         index=['true:1', 'true:0'], 
+    #         columns=['pred:1', 'pred:0']
+    #     )
+    # )
+    # print()
+    # print()
+
+    # # generate model reports
+    # results_output_folder = f'{DATASETS_PATH}/results'
+    
+    # df_results = pd.DataFrame(
+    #     columns = [
+    #         'dataset',
+    #         'split',
+    #         'model',
+    #         'num_features',
+    #         'stage',
+    #         'accuracy',
+    #         'sensitivity',
+    #         'specificity',
+    #         'precision',
+    #         'f1-score',
+    #         'CM(TP:TN:FP:FN)'
+    #     ]
+    # )
+    
+    # # check if report exists
+    # if path.isfile(f'{results_output_folder}/classification_models_scores_train_test.csv'):
+    #     df_results = pd.read_csv(f'{results_output_folder}/classification_models_scores_train_test.csv')
+    
+    # # remove existing rows for current dataset, model and split
+    # filter = (df_results['dataset'] == dataset_name) & (df_results['model'] == classification_model) & (df_results['split'] == cv_split)
+    # df_results = df_results.drop(df_results[filter].index).reset_index(drop = True)
+    
+    # # export train results
+    # train_results = classification_report(
+    #     target_train,
+    #     model.predict(features_train),
+    #     output_dict = True
+    # )
+    # df_results.loc[len(df_results)] = {
+    #     'dataset': dataset_name,
+    #     'split': cv_split,
+    #     'model': classification_model,
+    #     'num_features': len(features_names),
+    #     'stage': 'train',
+    #     'accuracy': train_results['accuracy'],
+    #     'sensitivity': train_results['1']['recall'],
+    #     'specificity': train_results['0']['recall'],
+    #     'precision': train_results['weighted avg']['precision'],
+    #     'f1-score': train_results['weighted avg']['f1-score'],
+    #     'CM(TP:TN:FP:FN)': f'{cm_train[0][0]}:{cm_train[1][1]}:{cm_train[1][0]}:{cm_train[0][1]}'
+    # }
+
+    # # export test results
+    # test_results = classification_report(
+    #     target_test,
+    #     model.predict(features_test),
+    #     output_dict = True
+    # )
+    # df_results.loc[len(df_results)] = {
+    #     'dataset': dataset_name,
+    #     'split': cv_split,
+    #     'model': classification_model,
+    #     'num_features': len(features_names),
+    #     'stage': 'test',
+    #     'accuracy': test_results['accuracy'],
+    #     'sensitivity': test_results['1']['recall'],
+    #     'specificity': test_results['0']['recall'],
+    #     'precision': test_results['weighted avg']['precision'],
+    #     'f1-score': test_results['weighted avg']['f1-score'],
+    #     'CM(TP:TN:FP:FN)': f'{cm_test[0][0]}:{cm_test[1][1]}:{cm_test[1][0]}:{cm_test[0][1]}'
+    # }
+    
+    # # write report to file
+    # if not path.exists(results_output_folder) or not path.isdir(results_output_folder):
+    #     makedirs(results_output_folder)
+    
+    # df_results.to_csv(
+    #     f'{results_output_folder}/classification_models_scores_train_test.csv',
+    #     index = False,
+    #     float_format = '%.4f'
+    # )
