@@ -2,5 +2,6 @@ backups
 tests
 dataset/features
 dataset/transformed
-dataset/results
+results/scores
+results/models
 r_code/saved_data

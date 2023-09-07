@@ -63,8 +63,9 @@ def extract_max_features(file_path: str):
     return None
 
 if __name__ == '__main__':
-    # datasets path
+    # output paths
     DATASETS_PATH = path.realpath(path.join(SCRIPT_DIR, '..', '..', 'dataset'))
+    RESULTS_PATH = path.realpath(path.join(SCRIPT_DIR, '..', '..', 'results'))
     
     # get some general info
     dataset_name = path.basename(train_file).split('.')[0]
@@ -138,7 +139,7 @@ if __name__ == '__main__':
     print()
     
     # persist model 
-    models_output_folder = f'{DATASETS_PATH}/models'
+    models_output_folder = f'{RESULTS_PATH}/models'
     models_output_filename = f'model__{classification_model}__{dataset_name}_{max_features}_llo.skops'
     
     # check if model output folder exists and create it if not
@@ -148,7 +149,7 @@ if __name__ == '__main__':
     persist_model(model, f'{models_output_folder}/{models_output_filename}')
     
     # generate model reports
-    results_output_folder = f'{DATASETS_PATH}/results'
+    results_output_folder = f'{RESULTS_PATH}/scores'
     results_output_file_path = f'{results_output_folder}/classification_models_scores_llo.csv'
     
     df_results = pd.DataFrame(
