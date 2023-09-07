@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import sys
-from os import path, makedirs
+from os import path, makedirs, sep
 
 SCRIPT_DIR = path.dirname(path.abspath(__file__))
 sys.path.append(path.dirname(SCRIPT_DIR))
@@ -55,14 +55,21 @@ def extract_cv_split(file_path: str):
         return split_part 
     return None
 
+def extract_max_features(file_path: str):
+    split_part = file_path.split(sep)[-2]
+    if re.match(r'^\d{2}-features$', split_part):
+        return split_part 
+    return None
+
 if __name__ == '__main__':
     # datasets path
     DATASETS_PATH = path.realpath(path.join(SCRIPT_DIR, '..', '..', 'dataset'))
     
     # get some general info
     dataset_name = path.basename(train_file).split('.')[0]
-    cv_split = extract_cv_split(path.dirname(train_file))    
-
+    cv_split = extract_cv_split(path.dirname(train_file))
+    max_features = extract_max_features(path.dirname(features_file))
+    
     print('='*100)
     print(f' DATASET: {dataset_name}')
     print(f' MODEL: {classification_model}')
@@ -149,6 +156,7 @@ if __name__ == '__main__':
             'dataset',
             'split',
             'model',
+            'max_features',
             'num_features',
             'stage',
             'accuracy',
@@ -178,6 +186,7 @@ if __name__ == '__main__':
         'dataset': dataset_name,
         'split': cv_split,
         'model': classification_model,
+        'max_features': max_features,
         'num_features': len(features_names),
         'stage': 'train',
         'accuracy': train_results['accuracy'],
@@ -198,6 +207,7 @@ if __name__ == '__main__':
         'dataset': dataset_name,
         'split': cv_split,
         'model': classification_model,
+        'max_features': max_features,
         'num_features': len(features_names),
         'stage': 'test',
         'accuracy': test_results['accuracy'],

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import sys
-from os import path, makedirs
+from os import path, makedirs, sep
 
 SCRIPT_DIR = path.dirname(path.abspath(__file__))
 sys.path.append(path.dirname(SCRIPT_DIR))
@@ -55,12 +55,19 @@ def extract_cv_split(file_path: str):
         return split_part 
     return None
 
+def extract_max_features(file_path: str):
+    split_part = file_path.split(sep)[-2]
+    if re.match(r'^\d{2}-features$', split_part):
+        return split_part 
+    return None
+
 if __name__ == '__main__':
     # datasets path
     DATASETS_PATH = path.realpath(path.join(SCRIPT_DIR, '..', '..', 'dataset'))
     
     # get some general info
     dataset_name = path.basename(train_file).split('.')[0]
+    max_features = extract_max_features(path.dirname(features_file))
     
     print('='*100)
     print(f' DATASET: {dataset_name}')
@@ -137,6 +144,7 @@ if __name__ == '__main__':
         columns = [
             'dataset',
             'model',
+            'max_features',
             'num_features',
             'accuracy',
             'sensitivity',
@@ -152,7 +160,7 @@ if __name__ == '__main__':
         df_results = pd.read_csv(results_output_file_path)
     
     # remove existing rows for current dataset, model and split
-    filter = (df_results['dataset'] == dataset_name) & (df_results['model'] == classification_model)
+    filter = (df_results['dataset'] == dataset_name) & (df_results['model'] == classification_model) & (df_results['max_features'] == max_features)
     df_results = df_results.drop(df_results[filter].index).reset_index(drop = True)
     
     # export results
@@ -165,6 +173,7 @@ if __name__ == '__main__':
     df_results.loc[len(df_results)] = {
         'dataset': dataset_name,
         'model': classification_model,
+        'max_features': max_features,
         'num_features': len(features_names),
         'accuracy': results['accuracy'],
         'sensitivity': results['1']['recall'],
