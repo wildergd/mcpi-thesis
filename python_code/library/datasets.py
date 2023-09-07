@@ -181,7 +181,7 @@ def split_dataset(
         random_state = random_state,
         **kwargs
     )
-    
+
 __all__ = [
     'get_dataframe_summarized',
     'standarize',
