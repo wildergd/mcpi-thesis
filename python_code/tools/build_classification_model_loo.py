@@ -9,15 +9,12 @@ sys.dont_write_bytecode = True
 
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 import warnings
-import random
 import re
 import numpy as np
 import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.linear_model import LogisticRegressionCV
-from sklearn.metrics import accuracy_score, roc_curve, auc, confusion_matrix, classification_report, roc_auc_score
+from sklearn.metrics import roc_curve, auc, confusion_matrix, classification_report, roc_auc_score
 from sklearn.metrics.pairwise import pairwise_distances
-from sklearn.model_selection import LeaveOneOut, KFold, cross_val_score, cross_validate
+from sklearn.model_selection import LeaveOneOut
 from sklearn.neighbors import NearestCentroid
 from sklearn.utils.extmath import softmax
 from library.classifiers import get_estimator
