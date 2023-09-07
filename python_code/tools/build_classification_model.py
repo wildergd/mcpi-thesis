@@ -17,6 +17,7 @@ from sklearn.metrics.pairwise import pairwise_distances
 from sklearn.neighbors import NearestCentroid
 from sklearn.utils.extmath import softmax
 from library.classifiers import get_estimator
+from library.model_persistence import persist_model
 
 pd.options.display.precision = 4
 warnings.filterwarnings('ignore')
@@ -148,6 +149,16 @@ if __name__ == '__main__':
     print()
     print()
 
+    # persist model 
+    models_output_folder = f'{DATASETS_PATH}/models'
+    models_output_filename = f'model__{classification_model}__{dataset_name}_{max_features}_{cv_split}.skops'
+    
+    # check if model output folder exists and create it if not
+    if path.exists(models_output_folder):
+        makedirs(models_output_folder)
+    
+    persist_model(model, f'{models_output_folder}/{models_output_filename}')
+    
     # generate model reports
     results_output_folder = f'{DATASETS_PATH}/results'
     
@@ -164,7 +175,8 @@ if __name__ == '__main__':
             'specificity',
             'precision',
             'f1-score',
-            'CM(TP:TN:FP:FN)'
+            'CM(TP:TN:FP:FN)',
+            'model_file'
         ]
     )
     
@@ -194,7 +206,8 @@ if __name__ == '__main__':
         'specificity': train_results['0']['recall'],
         'precision': train_results['weighted avg']['precision'],
         'f1-score': train_results['weighted avg']['f1-score'],
-        'CM(TP:TN:FP:FN)': f'{cm_train[0][0]}:{cm_train[1][1]}:{cm_train[1][0]}:{cm_train[0][1]}'
+        'CM(TP:TN:FP:FN)': f'{cm_train[0][0]}:{cm_train[1][1]}:{cm_train[1][0]}:{cm_train[0][1]}',
+        'model_file': models_output_filename
     }
 
     # export test results
@@ -215,7 +228,8 @@ if __name__ == '__main__':
         'specificity': test_results['0']['recall'],
         'precision': test_results['weighted avg']['precision'],
         'f1-score': test_results['weighted avg']['f1-score'],
-        'CM(TP:TN:FP:FN)': f'{cm_test[0][0]}:{cm_test[1][1]}:{cm_test[1][0]}:{cm_test[0][1]}'
+        'CM(TP:TN:FP:FN)': f'{cm_test[0][0]}:{cm_test[1][1]}:{cm_test[1][0]}:{cm_test[0][1]}',
+        'model_file': models_output_filename
     }
     
     # write report to file
