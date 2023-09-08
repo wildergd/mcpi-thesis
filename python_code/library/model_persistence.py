@@ -1,28 +1,29 @@
-from joblib import dump as joblib_dump, load as joblib_load
-from skops.io import dump as skops_dump, load as skops_load
+import joblib
+from skops import io as sio
 from os import path
 
 def get_file_path(filepath: str, ext: str = 'joblib') -> str:
     filename, _ = path.splitext(path.basename(filepath))
-    return f'{path.basename(filepath)}/{filename}.{ext}'
+    return f'{path.dirname(filepath)}/{filename}.{ext}'
 
 def extract_format_from_filename(filepath: str) -> str:
     _, extension = path.splitext(path.basename(filepath))
-    if extension in ['joblib', 'skops']:
-        return extension
+    if extension in ['.joblib', '.skops']:
+        return extension[1:]
     raise IOError('Invalid model file.')
 
-def persist_model(model, filename: str, format: str = 'joblib'):
+def persist_model(model, filename: str):
+    format = extract_format_from_filename(filename)
     if format == 'skops':
-        return skops_dump(model, get_file_path(filename, format))
+        return sio.dump(model, filename)
     
-    return joblib_dump(model, get_file_path(filename, format))
+    return joblib.dump(model, get_file_path(filename, format))
 
 def load_model(filename: str):
     format = extract_format_from_filename(filename)
     if format == 'skops':
-        return skops_load(filename, trusted = True)
-    return joblib_load(filename)
+        return sio.load(filename, trusted = True)
+    return joblib.load(filename)
 
 __all__ = [
     'load_model',

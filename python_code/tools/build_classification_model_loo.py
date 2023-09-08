@@ -140,13 +140,13 @@ if __name__ == '__main__':
     
     # persist model 
     models_output_folder = f'{RESULTS_PATH}/models'
-    models_output_filename = f'model__{classification_model}__{dataset_name}_{max_features}_llo.skops'
+    models_output_filename = f'model__{classification_model}__{dataset_name}__{max_features}__llo.skops'
     
     # check if model output folder exists and create it if not
-    if path.exists(models_output_folder):
+    if not path.exists(models_output_folder):
         makedirs(models_output_folder)
     
-    persist_model(model, f'{models_output_folder}/{models_output_filename}')
+    persist_model(model, path.abspath(f'{models_output_folder}/{models_output_filename}'))
     
     # generate model reports
     results_output_folder = f'{RESULTS_PATH}/scores'
