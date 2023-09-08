@@ -138,7 +138,7 @@ if __name__ == '__main__':
     
     # persist model 
     models_output_folder = f'{RESULTS_PATH}/models'
-    models_output_filename = f'model__{classification_model}__{dataset_name}__{max_features}__llo.skops'
+    models_output_filename = f'model__{classification_model}__{dataset_name}__{max_features}__loo.skops'
     
     # check if model output folder exists and create it if not
     if not path.exists(models_output_folder):
@@ -148,7 +148,7 @@ if __name__ == '__main__':
     
     # generate model reports
     results_output_folder = f'{RESULTS_PATH}/scores'
-    results_output_file_path = f'{results_output_folder}/classification_models_scores_llo.csv'
+    results_output_file_path = f'{results_output_folder}/classification_models_scores_loo.csv'
     
     df_results = pd.DataFrame(
         columns = [
