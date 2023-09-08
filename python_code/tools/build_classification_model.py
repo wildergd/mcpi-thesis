@@ -76,6 +76,7 @@ if __name__ == '__main__':
     print(f' DATASET: {dataset_name}')
     print(f' MODEL: {classification_model}')
     print(f' SPLIT_SET: {cv_split}')
+    print(f' MAX FEATURES: {max_features}')
     print('='*100)
 
     # read features    
@@ -107,9 +108,8 @@ if __name__ == '__main__':
     fpr, tpr, thresholds = roc_curve(target_train, train_pred_probs[:,1], drop_intermediate = True)
     roc_auc = auc(fpr, tpr)
 
-    accuracy = 1 - float(np.sum(np.abs(train_pred_probs[:,1] - target_train))) / train_pred_probs[:,1].size
     cm_train = confusion_matrix(target_train, train_pred, labels=[1, 0])
-    print(classification_report(target_train, model.predict(features_train)))
+    print(classification_report(target_train, train_pred))
     print(
         pd.DataFrame(
             cm_train, 
@@ -137,9 +137,8 @@ if __name__ == '__main__':
     fpr, tpr, thresholds = roc_curve(target_test, test_pred_probs[:,1], drop_intermediate = True)
     roc_auc = auc(fpr, tpr)
 
-    accuracy = 1 - float(np.sum(np.abs(test_pred_probs[:,1] - target_test))) / test_pred_probs[:,1].size
     cm_test = confusion_matrix(target_test, test_pred, labels=[1, 0])
-    print(classification_report(target_test, model.predict(features_test)))    
+    print(classification_report(target_test, test_pred))
     print(
         pd.DataFrame(
             cm_test, 
@@ -192,7 +191,7 @@ if __name__ == '__main__':
     # export train results
     train_results = classification_report(
         target_train,
-        model.predict(features_train),
+        train_pred,
         output_dict = True
     )
     df_results.loc[len(df_results)] = {
@@ -214,7 +213,7 @@ if __name__ == '__main__':
     # export test results
     test_results = classification_report(
         target_test,
-        model.predict(features_test),
+        test_pred,
         output_dict = True
     )
     df_results.loc[len(df_results)] = {

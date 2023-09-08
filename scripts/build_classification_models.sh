@@ -55,8 +55,6 @@ build_classification_model () {
     local SPLIT=${5:-'80-20'}
     local TRAIN=${6:-''}
 
-    echo "Building classification model: '$MODEL' for dataset: ${DATASET_NAME}"
-
     BUILD_MODEL_SCRIPT=build_classification_model_loo.py
     FEATURES_DATASET_PATH="$BASE_PATH/dataset/features/all/$MAX_FEATURES-features/$MODEL/$DATASET_NAME.txt"
     TRAIN_DATASET_PATH="$BASE_PATH/dataset/transformed/classification/$DATASET_NAME.csv"

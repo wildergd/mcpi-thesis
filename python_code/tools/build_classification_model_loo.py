@@ -74,6 +74,7 @@ if __name__ == '__main__':
     print('='*100)
     print(f' DATASET: {dataset_name}')
     print(f' MODEL: {classification_model}')
+    print(f' MAX FEATURES: {max_features}')
     print('='*100)
 
     # read features    
@@ -123,9 +124,8 @@ if __name__ == '__main__':
     fpr, tpr, thresholds = roc_curve(y_target, y_pred_probs, drop_intermediate = True)
     roc_auc = auc(fpr, tpr)
 
-    accuracy = 1 - float(np.sum(np.abs(y_pred_probs - y_target))) / y_pred_probs.size
     cm = confusion_matrix(y_target, y_preds, labels=[1, 0])
-    print(classification_report(target, model.predict(features)))
+    print(classification_report(y_target, y_preds))
     print(
         pd.DataFrame(
             cm, 
@@ -176,8 +176,8 @@ if __name__ == '__main__':
     
     # export results
     results = classification_report(
-        target,
-        model.predict(features),
+        y_target,
+        y_preds,
         output_dict = True
     )
     
