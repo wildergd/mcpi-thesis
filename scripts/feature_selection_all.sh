@@ -6,7 +6,7 @@ while getopts ":m:" option; do
     case $option in
         m)  # model
             MODEL=${OPTARG:-$MODEL};;
-        \?) # Invalid Otion
+        \?) # Invalid Option
             echo "Error: Invalid option"
             exit;;
     esac

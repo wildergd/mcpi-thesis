@@ -53,6 +53,21 @@ if __name__ == '__main__':
     # datasets path
     DATASETS_PATH = path.realpath(path.join(SCRIPT_DIR, '..', '..', 'dataset'))
     
+    # get some general info
+    dataset_name = path.basename(csv_file).split('.')[0]
+    
+    print('='*100)
+    print(f' DATASET: {dataset_name}')
+    print(f' MODEL: {classification_method}')
+    print(f' MAX FEATURES: {max_features}')
+    if train_only:
+        train_split = extract_cv_split(path.dirname(csv_file))   
+        print(f' SPLIT_SET: {train_split}')
+    else:
+        print(f' SPLIT_SET: ALL DATA')
+    print('='*100)
+    print()
+    
     # read full dataset
     df = pd.read_csv(path.abspath(csv_file))
 
@@ -100,4 +115,6 @@ if __name__ == '__main__':
     f.write('\n'.join(features.loc[:, selector.support_].columns.to_list()))
     f.close()
 
+    print()
+    print()
 
