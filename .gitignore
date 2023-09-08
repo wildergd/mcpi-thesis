@@ -2,5 +2,4 @@ backups
 tests
 dataset/features
 dataset/transformed
-results/scores
-results/models
+results
