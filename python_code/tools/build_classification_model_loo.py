@@ -120,8 +120,6 @@ if __name__ == '__main__':
     y_preds = np.array(y_preds)
     y_pred_probs = np.array(y_pred_probs)
     
-    train_pred = model.predict(features_train)
-
     fpr, tpr, thresholds = roc_curve(y_target, y_pred_probs, drop_intermediate = True)
     roc_auc = auc(fpr, tpr)
 
