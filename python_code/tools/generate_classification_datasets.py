@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import sys
-from os import path, makedirs
+from os import path
 
 SCRIPT_DIR = path.dirname(path.abspath(__file__))
 sys.path.append(path.dirname(SCRIPT_DIR))

@@ -89,15 +89,15 @@ if __name__ == '__main__':
     features = df[features_names]
     target = df['condition']
     
+    # define cross-validation method to use
+    cv = LeaveOneOut()
+    
     # create model
     model = get_estimator(
         classification_model,
         random_state = seed,
         max_features = None
     ) 
-    
-    # define cross-validation method to use
-    cv = LeaveOneOut()
 
     # perform cross-validation
     y_target = []
@@ -135,16 +135,11 @@ if __name__ == '__main__':
     )
     
     print()
+
+    model.fit(features, target)
     
-    # persist model 
-    models_output_folder = f'{RESULTS_PATH}/models'
-    models_output_filename = f'model__{classification_model}__{dataset_name}__{max_features}__loo.skops'
-    
-    # check if model output folder exists and create it if not
-    if not path.exists(models_output_folder):
-        makedirs(models_output_folder)
-    
-    persist_model(model, path.abspath(f'{models_output_folder}/{models_output_filename}'))
+    # model output filename
+    model_output_filename = f'model__{classification_model}__{dataset_name}__{max_features}__loo.skops'
     
     # generate model reports
     results_output_folder = f'{RESULTS_PATH}/scores'
@@ -192,7 +187,7 @@ if __name__ == '__main__':
         'precision': results['weighted avg']['precision'],
         'f1-score': results['weighted avg']['f1-score'],
         'CM(TP:TN:FP:FN)': f'{cm[0][0]}:{cm[1][1]}:{cm[1][0]}:{cm[0][1]}',
-        'model_file': models_output_filename
+        'model_file': model_output_filename
     }
     
     # write report to file
@@ -206,4 +201,16 @@ if __name__ == '__main__':
     )
     
     print()
+    
+    # persist final model 
+    models_output_folder = f'{RESULTS_PATH}/models'
+    
+    model.fit(features, target)
+    
+    # check if model output folder exists and create it if not
+    if not path.exists(models_output_folder):
+        makedirs(models_output_folder)
+    
+    persist_model(model, path.abspath(f'{models_output_folder}/{model_output_filename}'))
+    
     print()

@@ -149,15 +149,8 @@ if __name__ == '__main__':
     print()
     print()
 
-    # persist model 
-    models_output_folder = f'{RESULTS_PATH}/models'
-    models_output_filename = f'model__{classification_model}__{dataset_name}__{max_features}__{cv_split}.skops'
-    
-    # check if model output folder exists and create it if not
-    if not path.exists(models_output_folder):
-        makedirs(models_output_folder)
-    
-    persist_model(model, path.abspath(f'{models_output_folder}/{models_output_filename}'))
+    # model output filename
+    model_output_filename = f'model__{classification_model}__{dataset_name}__{max_features}__{cv_split}.skops'
     
     # generate model reports
     results_output_folder = f'{RESULTS_PATH}/scores'
@@ -207,7 +200,7 @@ if __name__ == '__main__':
         'precision': train_results['weighted avg']['precision'],
         'f1-score': train_results['weighted avg']['f1-score'],
         'CM(TP:TN:FP:FN)': f'{cm_train[0][0]}:{cm_train[1][1]}:{cm_train[1][0]}:{cm_train[0][1]}',
-        'model_file': models_output_filename
+        'model_file': model_output_filename
     }
 
     # export test results
@@ -229,7 +222,7 @@ if __name__ == '__main__':
         'precision': test_results['weighted avg']['precision'],
         'f1-score': test_results['weighted avg']['f1-score'],
         'CM(TP:TN:FP:FN)': f'{cm_test[0][0]}:{cm_test[1][1]}:{cm_test[1][0]}:{cm_test[0][1]}',
-        'model_file': models_output_filename
+        'model_file': model_output_filename
     }
     
     # write report to file
@@ -243,4 +236,14 @@ if __name__ == '__main__':
     )
 
     print()
+    
+    # persist model 
+    models_output_folder = f'{RESULTS_PATH}/models'
+    
+    # check if model output folder exists and create it if not
+    if not path.exists(models_output_folder):
+        makedirs(models_output_folder)
+    
+    persist_model(model, path.abspath(f'{models_output_folder}/{model_output_filename}'))
+    
     print()

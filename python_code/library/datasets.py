@@ -10,6 +10,7 @@ from sklearn.preprocessing import MinMaxScaler, StandardScaler
 class StandarizeMethod(Enum):
     DEFAULT = 0
     ROBUST = 1
+    NONE = 2
     
 def get_bad_features(df_train, df_test):
     bad_features = []
@@ -38,6 +39,9 @@ def standarize(
     degree: float = 3,
     remove_outliers: bool = False
 ) -> np.ndarray:
+    if method == StandarizeMethod.NONE:
+        return values
+    
     if method == StandarizeMethod.ROBUST:
         s = norm.ppf(0.75)
         numerator = s * (values - np.median(values))
