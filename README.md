@@ -9,12 +9,12 @@ Depresjon dataset proposed by Garcia Ceja et. al. (2018), available at [Simula D
 ### Generating datasets for classification
 
 ```bash
-$ scripts/generate_datasets.sh
+$ scripts/generate_classification_datasets.sh
 ```
 ### spliting datasets
 
 ```bash
-$ scripts/split_datasets.sh
+$ scripts/split_classification_datasets.sh
 ```
 
 ### Feature extraction
