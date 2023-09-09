@@ -202,10 +202,11 @@ if __name__ == '__main__':
     
     print()
     
+    # refit model using all data
+    model.fit(features, target)
+    
     # persist final model 
     models_output_folder = f'{RESULTS_PATH}/models'
-    
-    model.fit(features, target)
     
     # check if model output folder exists and create it if not
     if not path.exists(models_output_folder):

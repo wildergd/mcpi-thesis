@@ -237,6 +237,19 @@ if __name__ == '__main__':
 
     print()
     
+    # refit model using all data
+    features = pd.concat([
+        features_train,
+        features_test
+    ])
+    
+    target = pd.concat([
+        target_train,
+        target_test
+    ])
+    
+    model.fit(features, target)
+    
     # persist model 
     models_output_folder = f'{RESULTS_PATH}/models'
     
