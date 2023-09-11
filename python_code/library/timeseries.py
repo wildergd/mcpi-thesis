@@ -6,6 +6,7 @@ class ComputeFeatures(Enum):
     ALL = 0
     MINIMAL = 1
     
+# extract features
 def extract_ts_features(df, compute_features, **kwargs):
     extracted_features = extract_features(
         df,

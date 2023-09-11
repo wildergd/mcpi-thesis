@@ -7,7 +7,7 @@ SCRIPT_DIR = path.dirname(path.abspath(__file__))
 sys.path.append(path.dirname(SCRIPT_DIR))
 sys.dont_write_bytecode = True
 
-from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter, ArgumentTypeError
 import warnings
 import random
 import numpy as np
@@ -15,11 +15,23 @@ from re import match
 import pandas as pd
 from genetic_selection import GeneticSelectionCV
 from library.classifiers import get_estimator
+from sklearn.model_selection import LeaveOneOut
 
 pd.options.display.precision = 4
 warnings.filterwarnings('ignore')
 
 # Parse command line arguments
+def cv_arg_check(arg_value):
+    try:
+        value = int(arg_value)
+        if (value > 3):
+            return value
+    except ValueError:
+        pass
+    if arg_value == 'loo':
+        return arg_value
+    raise ArgumentTypeError("param must be an int > 3 or 'loo'")
+
 parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
 parser.add_argument('-f', '--file', help='Path to dataset file (CSV format)', required = True)
 parser.add_argument(
@@ -30,6 +42,12 @@ parser.add_argument(
 )
 parser.add_argument('-mf', '--max-features', default='20', help='Number of features to be selected. Defaults to 20')
 parser.add_argument('-to', '--train-only', default='no', help='Use only the train dataset', choices = ['yes', 'no'])
+parser.add_argument(
+    '-cv', '--cross-validation',
+    help='Cross-Validation method',
+    default = 5,
+    type=cv_arg_check
+)
 args = vars(parser.parse_args())
 
 # Set up parameters
@@ -37,6 +55,7 @@ csv_file = args['file']
 classification_method = args['method']
 max_features = int(args['max_features']) if args['max_features'].isdigit() else 20
 train_only = args['train_only'] == 'yes'
+cv_method = args['cross_validation'] if isinstance(args['cross_validation'], int) else LeaveOneOut()
 seed = 90
 
 def extract_cv_split(file_path: str):
@@ -45,7 +64,7 @@ def extract_cv_split(file_path: str):
         return split_part 
     return None
 
-if __name__ == '__main__':    
+if __name__ == '__main__':
     # Set seed for reproducibility
     random.seed(seed)
     np.random.seed(seed)
@@ -60,6 +79,12 @@ if __name__ == '__main__':
     print(f' DATASET: {dataset_name}')
     print(f' MODEL: {classification_method}')
     print(f' MAX FEATURES: {max_features}')
+    print(
+        ' CV-METHOD: {}'
+            .format(
+                'k-fold ({})'.format(cv_method) if isinstance(args['cross_validation'], int) else args['cross_validation']
+            )
+    )
     if train_only:
         train_split = extract_cv_split(path.dirname(csv_file))   
         print(f' SPLIT_SET: {train_split}')
@@ -75,11 +100,13 @@ if __name__ == '__main__':
     estimator = get_estimator(
         method = classification_method,
         random_state = seed,
-        max_features = max_features
+        max_features = max_features,
+        cv_method = cv_method
     )
-    
-    df = df.drop('number', axis = 1)
 
+    # drop index column    
+    df = df.drop('number', axis = 1)
+    
     target = df['condition']
     features = df.drop('condition', axis = 1)
     

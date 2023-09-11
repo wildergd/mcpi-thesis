@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import sys
-from os import path
+from os import path, makedirs
 
 SCRIPT_DIR = path.dirname(path.abspath(__file__))
 sys.path.append(path.dirname(SCRIPT_DIR))
@@ -74,13 +74,20 @@ if __name__ == '__main__':
             column_sort = 'timestamp',
             column_value = 'activity',
         )
-        
+                
         features_dataset = pd.concat([
             features_dataset,
             extracted_features,
         ])
 
+    # add condition column
     features_dataset['condition'] = features_dataset.index.map(lambda value: int(value.startswith('condition')))
+    
+    # remove columns with unique value
+    features_dataset = features_dataset[[c for c in list(features_dataset) if len(features_dataset[c].unique()) > 1]]
+    
+    if not path.exists(output_folder):
+        makedirs(output_folder)
     
     features_dataset.to_csv(
         f'{output_folder}/features_{args["compute_features"].lower()}_{frequency}_{summarize_method}_standarized_{standarize_method}_outliers_{remove_outliers}.csv',

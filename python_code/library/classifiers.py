@@ -15,8 +15,6 @@ def get_estimator(
             solver='liblinear',
             class_weight = 'balanced',
             tol = 0.0001,
-            n_jobs = -1,
-            penalty = None,
             random_state = random_state,
             **kwargs
         )
@@ -26,7 +24,6 @@ def get_estimator(
             solver='liblinear',
             class_weight = 'balanced',
             tol = 0.0001,
-            n_jobs = -1,
             cv = cv_method,
             random_state = random_state,
             **kwargs
