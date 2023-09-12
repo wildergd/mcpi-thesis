@@ -2,8 +2,9 @@
 
 TRAIN='no'
 MODELS=''
+CV=5
 
-while getopts :m:t: option; do
+while getopts :m:t:v: option; do
     case $option in
         m)  # models
             PARAM_VALUE=`echo $OPTARG | tr '[:upper:]' '[:lower:]'`
@@ -13,6 +14,8 @@ while getopts :m:t: option; do
             if [[ -z $PARAM_VALUE || $PARAM_VALUE != 'no' ]]; then
                 TRAIN='yes'
             fi;;
+        v)  # cross-validation
+            CV=${OPTARG:-$CV};;
         \?) # Invalid Option
             echo "Error: Invalid option"
             exit;;
@@ -29,19 +32,19 @@ IFS=',' read -ra MODELS_LIST <<< $MODELS
 if [[ $TRAIN == "yes" ]]; then
     for MODEL in ${MODELS_LIST[@]}
     do
-        sh build_classification_model.sh -m $MODEL -x 10 -s 70-30 -t $TRAIN
-        sh build_classification_model.sh -m $MODEL -x 10 -s 70-30_av -t $TRAIN
-        sh build_classification_model.sh -m $MODEL -x 10 -s 80-20 -t $TRAIN
-        sh build_classification_model.sh -m $MODEL -x 10 -s 80-20_av -t $TRAIN
-        sh build_classification_model.sh -m $MODEL -x 20 -s 70-30 -t $TRAIN
-        sh build_classification_model.sh -m $MODEL -x 20 -s 70-30_av -t $TRAIN
-        sh build_classification_model.sh -m $MODEL -x 20 -s 80-20 -t $TRAIN
-        sh build_classification_model.sh -m $MODEL -x 20 -s 80-20_av -t $TRAIN
+        sh build_classification_model.sh -m $MODEL -x 10 -s 70-30 -t $TRAIN -v $CV
+        sh build_classification_model.sh -m $MODEL -x 10 -s 70-30_av -t $TRAIN -v $CV
+        sh build_classification_model.sh -m $MODEL -x 10 -s 80-20 -t $TRAIN -v $CV
+        sh build_classification_model.sh -m $MODEL -x 10 -s 80-20_av -t $TRAIN -v $CV
+        sh build_classification_model.sh -m $MODEL -x 20 -s 70-30 -t $TRAIN -v $CV
+        sh build_classification_model.sh -m $MODEL -x 20 -s 70-30_av -t $TRAIN -v $CV
+        sh build_classification_model.sh -m $MODEL -x 20 -s 80-20 -t $TRAIN -v $CV
+        sh build_classification_model.sh -m $MODEL -x 20 -s 80-20_av -t $TRAIN -v $CV
     done
 else
     for MODEL in ${MODELS_LIST[@]}
     do
-        sh build_classification_model.sh -m $MODEL -x 10 -t $TRAIN
-        sh build_classification_model.sh -m $MODEL -x 20 -t $TRAIN
+        sh build_classification_model.sh -m $MODEL -x 10 -t $TRAIN -v $CV
+        sh build_classification_model.sh -m $MODEL -x 20 -t $TRAIN -v $CV
     done
 fi

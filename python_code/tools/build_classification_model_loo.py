@@ -62,15 +62,30 @@ def extract_max_features(file_path: str):
         return split_part 
     return None
 
+def use_test_set(test_file: str):
+    return isinstance(test_file, str) and len(test_file) > 0
+
 if __name__ == '__main__':
     # output paths
     DATASETS_PATH = path.realpath(path.join(SCRIPT_DIR, '..', '..', 'dataset'))
     RESULTS_PATH = path.realpath(path.join(SCRIPT_DIR, '..', '..', 'results'))
-    
+    results_output_folder = f'{RESULTS_PATH}/scores'
+    models_output_folder = f'{RESULTS_PATH}/models'
+
     # get some general info
     dataset_name = path.basename(train_file).split('.')[0]
     max_features = extract_max_features(path.dirname(features_file))
+    cv_split = extract_cv_split(path.dirname(test_file)) if test_file is not None else None
+
+    # model output filename
+    model_output_filename = f'model__{classification_model}__{dataset_name}__{max_features}__loo.skops'
+    results_output_filename = f'{results_output_folder}/classification_models_scores_loo.csv'
+    if use_test_set(test_file):
+        results_output_filename = f'{results_output_folder}/classification_models_scores_train_test__loo.csv'
+        model_output_filename = f'model__{classification_model}__{dataset_name}__{max_features}__{cv_split}__loo.skops'    
     
+    
+    # train model
     print('='*100)
     print(f' DATASET: {dataset_name}')
     print(f' MODEL: {classification_model}')
@@ -135,20 +150,99 @@ if __name__ == '__main__':
     )
     
     print()
-
-    model.fit(features, target)
     
-    # model output filename
-    model_output_filename = f'model__{classification_model}__{dataset_name}__{max_features}__loo.skops'
+    model.fit(features, target)
+
+    if use_test_set(test_file):
+        # validate model against test set
+        print()
+        print()
+        print('-'*55)
+        print(' TEST RESULTS')
+        print('-'*55)
+        print()
+        
+        # read test dataset
+        df_test = pd.read_csv(path.abspath(test_file), index_col='number').reset_index(drop = True)
+        
+        features_test = df_test[features_names]
+        target_test = df_test['condition']
+        
+        test_pred_probs = predict_proba(model, features_test)
+        test_pred = model.predict(features_test)
+
+        fpr, tpr, thresholds = roc_curve(target_test, test_pred_probs[:,1], drop_intermediate = True)
+        roc_auc = auc(fpr, tpr)
+
+        cm_test = confusion_matrix(target_test, test_pred, labels=[1, 0])
+        print(classification_report(target_test, test_pred))
+        print(
+            pd.DataFrame(
+                cm_test, 
+                index=['true:1', 'true:0'], 
+                columns=['pred:1', 'pred:0']
+            )
+        )
+        print()
+        
+        results = classification_report(
+            target_test,
+            test_pred,
+            output_dict = True
+        )
+        
+        results_data = {
+            'dataset': dataset_name,
+            'split': cv_split,
+            'model': classification_model,
+            'max_features': max_features,
+            'num_features': len(features_names),
+            'accuracy': results['accuracy'],
+            'sensitivity': results['1']['recall'],
+            'specificity': results['0']['recall'],
+            'precision': results['weighted avg']['precision'],
+            'f1-score': results['weighted avg']['f1-score'],
+            'CM(TP:TN:FP:FN)': f'{cm[0][0]}:{cm[1][1]}:{cm[1][0]}:{cm[0][1]}',
+            'model_file': model_output_filename
+        }
+        
+        # refit model using all data
+        model.fit(
+            pd.concat([features, features_test]),
+            pd.concat([target, target_test])
+        )
+        
+        pass
+    else:
+        # validate model against test set
+        results = classification_report(
+            y_target,
+            y_preds,
+            output_dict = True
+        )
+        
+        results_data = {
+            'dataset': dataset_name,
+            'model': classification_model,
+            'max_features': max_features,
+            'num_features': len(features_names),
+            'accuracy': results['accuracy'],
+            'sensitivity': results['1']['recall'],
+            'specificity': results['0']['recall'],
+            'precision': results['weighted avg']['precision'],
+            'f1-score': results['weighted avg']['f1-score'],
+            'CM(TP:TN:FP:FN)': f'{cm[0][0]}:{cm[1][1]}:{cm[1][0]}:{cm[0][1]}',
+            'model_file': model_output_filename
+        }
+        
+        pass 
     
     # generate model reports
-    results_output_folder = f'{RESULTS_PATH}/scores'
-    results_output_file_path = f'{results_output_folder}/classification_models_scores_loo.csv'
-    
     df_results = pd.DataFrame(
         columns = [
             'dataset',
             'model',
+            'split',
             'max_features',
             'num_features',
             'accuracy',
@@ -162,51 +256,28 @@ if __name__ == '__main__':
     )
     
     # check if report exists
-    if path.exists(results_output_file_path) and path.isfile(results_output_file_path):
-        df_results = pd.read_csv(results_output_file_path)
+    if path.exists(results_output_filename) and path.isfile(results_output_filename):
+        df_results = pd.read_csv(results_output_filename)
     
     # remove existing rows for current dataset, model and split
     filter = (df_results['dataset'] == dataset_name) & (df_results['model'] == classification_model) & (df_results['max_features'] == max_features)
-    df_results = df_results.drop(df_results[filter].index).reset_index(drop = True)
+    filter_w_split = filter & (df_results['split'] == cv_split)
+    final_filters = filter_w_split if use_test_set(test_file) else filter
+    df_results = df_results.drop(df_results[final_filters].index).reset_index(drop = True)
     
-    # export results
-    results = classification_report(
-        y_target,
-        y_preds,
-        output_dict = True
-    )
-    
-    df_results.loc[len(df_results)] = {
-        'dataset': dataset_name,
-        'model': classification_model,
-        'max_features': max_features,
-        'num_features': len(features_names),
-        'accuracy': results['accuracy'],
-        'sensitivity': results['1']['recall'],
-        'specificity': results['0']['recall'],
-        'precision': results['weighted avg']['precision'],
-        'f1-score': results['weighted avg']['f1-score'],
-        'CM(TP:TN:FP:FN)': f'{cm[0][0]}:{cm[1][1]}:{cm[1][0]}:{cm[0][1]}',
-        'model_file': model_output_filename
-    }
+    df_results.loc[len(df_results)] = results_data
     
     # write report to file
     if not path.exists(results_output_folder) or not path.isdir(results_output_folder):
         makedirs(results_output_folder)
     
     df_results.to_csv(
-        path.abspath(results_output_file_path),
+        path.abspath(results_output_filename),
         index = False,
         float_format = '%.4f'
     )
     
     print()
-    
-    # refit model using all data
-    model.fit(features, target)
-    
-    # persist final model 
-    models_output_folder = f'{RESULTS_PATH}/models'
     
     # check if model output folder exists and create it if not
     if not path.exists(models_output_folder):

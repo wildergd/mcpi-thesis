@@ -5,8 +5,9 @@ MODEL='nearcent'
 MAX_FEATURES=20
 SPLIT='80-20'
 TRAIN='no'
+CV=5
 
-while getopts :f:x:s:m:t: option; do
+while getopts :f:x:s:m:t:v: option; do
     case $option in
         f)  # dataset file
             DATASET_NAME=$OPTARG;;
@@ -21,6 +22,8 @@ while getopts :f:x:s:m:t: option; do
             if [[ -z "$PARAM_VALUE" || "$PARAM_VALUE" != "no" ]]; then
                 TRAIN='yes'
             fi;;
+        v)  # cross-validation
+            CV=${OPTARG:-$CV};;
         \?) # Invalid Option
             echo "Error: Invalid option"
             exit;;
@@ -60,7 +63,9 @@ build_classification_model () {
     TRAIN_DATASET_PATH="$BASE_PATH/dataset/transformed/classification/$DATASET_NAME.csv"
     TEST_DATASET_PARAM=""
     if [[ $TRAIN == "yes" ]]; then
-        BUILD_MODEL_SCRIPT=build_classification_model.py
+        if [[ $CV != "loo" ]]; then
+            BUILD_MODEL_SCRIPT=build_classification_model.py
+        fi
         TRAIN_DATASET_PATH="$BASE_PATH/dataset/transformed/classification/train/$SPLIT/$DATASET_NAME.csv"
         TEST_DATASET_PARAM="-vf $BASE_PATH/dataset/transformed/classification/test/$SPLIT/$DATASET_NAME.csv"
     fi
