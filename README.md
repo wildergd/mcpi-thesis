@@ -3,14 +3,22 @@
 > Project to obtain Master Degree in Data Science
 
 ## Data preparation
+
 ### Dataset
 Depresjon dataset proposed by Garcia Ceja et. al. (2018), available at [Simula Datasets](https://datasets.simula.no/depresjon/)
+
+### Install dependencies
+
+```bash
+$ pip install -r python-code/requirements.txt
+```
 
 ### Generating datasets for classification
 
 ```bash
 $ scripts/generate_classification_datasets.sh
 ```
+
 ### spliting datasets
 
 ```bash
@@ -20,13 +28,18 @@ $ scripts/split_classification_datasets.sh
 ### Feature extraction
 
 ```bash
-$ scripts/feature_selection_all.sh -m nearcent
-$ scripts/feature_selection_all.sh -m rlo
-$ scripts/feature_selection_all.sh -m svm
-$ scripts/feature_selection_all.sh -m sgd
-$ scripts/feature_selection_all.sh -m rf
-$ scripts/feature_selection_all.sh -m adaboost
+$ scripts/feature_selection_all.sh -m rlo -v loo
 ```
+
+or pass several models separated by comma
+
+```bash
+$ scripts/feature_selection_all.sh  -m nearcent,rlo,svm,sgd,rf,adaboost -v loo 
+```
+
+param *-v* can be either ***loo*** for *Leave One Out* validation or an integer specifying the ***number of folds*** in order to use *k-fold* cross validation
+
+> *Note:* feature generation is a very slow process and can be slower when using *Leave one out (loo)* validation
 
 ### Training and testing models
 

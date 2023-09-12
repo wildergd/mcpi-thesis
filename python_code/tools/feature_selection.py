@@ -1,21 +1,21 @@
 #!/usr/bin/env python
 
 import sys
-from os import path, makedirs
+from os import path, makedirs, cpu_count
 
 SCRIPT_DIR = path.dirname(path.abspath(__file__))
 sys.path.append(path.dirname(SCRIPT_DIR))
 sys.dont_write_bytecode = True
 
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter, ArgumentTypeError
-import warnings
-import random
-import numpy as np
-from re import match
-import pandas as pd
 from genetic_selection import GeneticSelectionCV
 from library.classifiers import get_estimator
+import numpy as np
+import pandas as pd
+import random
+from re import match
 from sklearn.model_selection import LeaveOneOut
+import warnings
 
 pd.options.display.precision = 4
 warnings.filterwarnings('ignore')
@@ -57,6 +57,8 @@ max_features = int(args['max_features']) if args['max_features'].isdigit() else 
 train_only = args['train_only'] == 'yes'
 cv_method = args['cross_validation'] if isinstance(args['cross_validation'], int) else LeaveOneOut()
 seed = 90
+n_cpus = cpu_count()
+n_jobs = max(n_cpus // 3, 1) 
 
 def extract_cv_split(file_path: str):
     split_part = path.split(file_path)[1]
@@ -90,6 +92,7 @@ if __name__ == '__main__':
         print(f' SPLIT_SET: {train_split}')
     else:
         print(f' SPLIT_SET: ALL DATA')
+    print(f' Parallel Jobs: {n_jobs}')
     print('='*100)
     print()
     
@@ -122,7 +125,7 @@ if __name__ == '__main__':
         crossover_independent_proba = 0.5,
         mutation_independent_proba = 0.05,
         caching = True,
-        n_jobs = -1
+        n_jobs = n_jobs
     )
     
     selector = selector.fit(features, target)
