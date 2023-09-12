@@ -185,7 +185,7 @@ if __name__ == '__main__':
         )
         print()
         
-        results = classification_report(
+        results_test = classification_report(
             target_test,
             test_pred,
             output_dict = True
@@ -197,12 +197,12 @@ if __name__ == '__main__':
             'model': classification_model,
             'max_features': max_features,
             'num_features': len(features_names),
-            'accuracy': results['accuracy'],
-            'sensitivity': results['1']['recall'],
-            'specificity': results['0']['recall'],
-            'precision': results['weighted avg']['precision'],
-            'f1-score': results['weighted avg']['f1-score'],
-            'CM(TP:TN:FP:FN)': f'{cm[0][0]}:{cm[1][1]}:{cm[1][0]}:{cm[0][1]}',
+            'accuracy': results_test['accuracy'],
+            'sensitivity': results_test['1']['recall'],
+            'specificity': results_test['0']['recall'],
+            'precision': results_test['weighted avg']['precision'],
+            'f1-score': results_test['weighted avg']['f1-score'],
+            'CM(TP:TN:FP:FN)': f'{cm_test[0][0]}:{cm_test[1][1]}:{cm_test[1][0]}:{cm_test[0][1]}',
             'model_file': model_output_filename
         }
         
@@ -211,8 +211,6 @@ if __name__ == '__main__':
             pd.concat([features, features_test]),
             pd.concat([target, target_test])
         )
-        
-        pass
     else:
         # validate model against test set
         results = classification_report(
@@ -235,7 +233,9 @@ if __name__ == '__main__':
             'model_file': model_output_filename
         }
         
-        pass 
+        # refit model using all data
+        model.fit(features, target)
+
     
     # generate model reports
     df_results = pd.DataFrame(
