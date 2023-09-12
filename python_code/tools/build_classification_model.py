@@ -17,7 +17,7 @@ from sklearn.metrics.pairwise import pairwise_distances
 from sklearn.neighbors import NearestCentroid
 from sklearn.utils.extmath import softmax
 from library.classifiers import get_estimator
-from library.model_persistence import persist_model
+from library.model_persistence import save_model
 
 pd.options.display.precision = 4
 warnings.filterwarnings('ignore')
@@ -66,11 +66,17 @@ if __name__ == '__main__':
     # output paths
     DATASETS_PATH = path.realpath(path.join(SCRIPT_DIR, '..', '..', 'dataset'))
     RESULTS_PATH = path.realpath(path.join(SCRIPT_DIR, '..', '..', 'results'))
+    results_output_folder = f'{RESULTS_PATH}/scores'
+    models_output_folder = f'{RESULTS_PATH}/models'
     
     # get some general info
     dataset_name = path.basename(train_file).split('.')[0]
     cv_split = extract_cv_split(path.dirname(train_file))
     max_features = extract_max_features(path.dirname(features_file))
+    
+    # model output filename
+    model_output_filename = f'model__{classification_model}__{dataset_name}__{max_features}__{cv_split}.skops'
+    results_output_filename = f'{results_output_folder}/classification_models_scores_train_test.csv'
     
     print('='*100)
     print(f' DATASET: {dataset_name}')
@@ -94,8 +100,10 @@ if __name__ == '__main__':
     model = get_estimator(classification_model, random_state = seed, max_features = None)
     model.fit(features_train, target_train)
     
+    # save trained model    
+    save_model(model, path.abspath(f'{models_output_folder}/train/{model_output_filename}'))
+
     # model summary
-    
     # predictions train
     print()
     print('-'*55)
@@ -149,12 +157,7 @@ if __name__ == '__main__':
     print()
     print()
 
-    # model output filename
-    model_output_filename = f'model__{classification_model}__{dataset_name}__{max_features}__{cv_split}.skops'
-    
     # generate model reports
-    results_output_folder = f'{RESULTS_PATH}/scores'
-    
     df_results = pd.DataFrame(
         columns = [
             'dataset',
@@ -174,8 +177,8 @@ if __name__ == '__main__':
     )
     
     # check if report exists
-    if path.isfile(f'{results_output_folder}/classification_models_scores_train_test.csv'):
-        df_results = pd.read_csv(f'{results_output_folder}/classification_models_scores_train_test.csv')
+    if path.exists(results_output_filename) and path.isfile(results_output_filename):
+        df_results = pd.read_csv(results_output_filename)
     
     # remove existing rows for current dataset, model and split
     filter = (df_results['dataset'] == dataset_name) & (df_results['model'] == classification_model) & (df_results['split'] == cv_split)
@@ -228,9 +231,9 @@ if __name__ == '__main__':
     # write report to file
     if not path.exists(results_output_folder) or not path.isdir(results_output_folder):
         makedirs(results_output_folder)
-    
+        
     df_results.to_csv(
-        f'{results_output_folder}/classification_models_scores_train_test.csv',
+        path.abspath(results_output_filename),
         index = False,
         float_format = '%.4f'
     )
@@ -250,13 +253,7 @@ if __name__ == '__main__':
     
     model.fit(features, target)
     
-    # persist model 
-    models_output_folder = f'{RESULTS_PATH}/models'
-    
-    # check if model output folder exists and create it if not
-    if not path.exists(models_output_folder):
-        makedirs(models_output_folder)
-    
-    persist_model(model, path.abspath(f'{models_output_folder}/{model_output_filename}'))
+    # persist final model     
+    save_model(model, path.abspath(f'{models_output_folder}/final/{model_output_filename}'))
     
     print()

@@ -18,7 +18,7 @@ from sklearn.model_selection import LeaveOneOut
 from sklearn.neighbors import NearestCentroid
 from sklearn.utils.extmath import softmax
 from library.classifiers import get_estimator
-from library.model_persistence import persist_model
+from library.model_persistence import save_model
 
 pd.options.display.precision = 4
 warnings.filterwarnings('ignore')
@@ -151,8 +151,12 @@ if __name__ == '__main__':
     
     print()
     
+    # refit model using all data
     model.fit(features, target)
 
+    # save trained model    
+    save_model(model, path.abspath(f'{models_output_folder}/train/{model_output_filename}'))
+    
     if use_test_set(test_file):
         # validate model against test set
         print()
@@ -212,7 +216,6 @@ if __name__ == '__main__':
             pd.concat([target, target_test])
         )
     else:
-        # validate model against test set
         results = classification_report(
             y_target,
             y_preds,
@@ -232,10 +235,6 @@ if __name__ == '__main__':
             'CM(TP:TN:FP:FN)': f'{cm[0][0]}:{cm[1][1]}:{cm[1][0]}:{cm[0][1]}',
             'model_file': model_output_filename
         }
-        
-        # refit model using all data
-        model.fit(features, target)
-
     
     # generate model reports
     df_results = pd.DataFrame(
@@ -278,11 +277,8 @@ if __name__ == '__main__':
     )
     
     print()
-    
-    # check if model output folder exists and create it if not
-    if not path.exists(models_output_folder):
-        makedirs(models_output_folder)
-    
-    persist_model(model, path.abspath(f'{models_output_folder}/{model_output_filename}'))
+
+    # save final model    
+    save_model(model, path.abspath(f'{models_output_folder}/final/{model_output_filename}'))
     
     print()

@@ -1,6 +1,6 @@
 import joblib
 from skops import io as sio
-from os import path
+from os import path, makedirs
 
 def get_file_path(filepath: str, ext: str = 'joblib') -> str:
     filename, _ = path.splitext(path.basename(filepath))
@@ -25,7 +25,16 @@ def load_model(filename: str):
         return sio.load(filename, trusted = True)
     return joblib.load(filename)
 
+
+def save_model(model, filename: str):
+    folder = path.dirname(filename)
+    if not path.exists(folder):
+        makedirs(folder)
+    
+    persist_model(model, filename)
+    
+
 __all__ = [
     'load_model',
-    'persist_model'
+    'save_model'
 ]
