@@ -78,17 +78,18 @@ if __name__ == '__main__':
     model_output_filename = f'model__{classification_model}__{dataset_name}__{max_features}__{cv_split}.skops'
     results_output_filename = f'{results_output_folder}/classification_models_scores_train_test.csv'
     
+    # read features    
+    f = open(path.abspath(features_file), 'r')
+    features_names = [line.strip() for line in f.readlines()]
+    f.close()
+
     print('='*100)
     print(f' DATASET: {dataset_name}')
     print(f' MODEL: {classification_model}')
     print(f' SPLIT_SET: {cv_split}')
     print(f' MAX FEATURES: {max_features}')
+    print(' FEATURES: {}'.format(', '.join(features_names)))
     print('='*100)
-
-    # read features    
-    f = open(path.abspath(features_file), 'r')
-    features_names = [line.strip() for line in f.readlines()]
-    f.close()
 
     # read train dataset
     df_train = pd.read_csv(path.abspath(train_file), index_col='number').reset_index(drop = True)

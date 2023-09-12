@@ -63,11 +63,13 @@ build_classification_model () {
     TRAIN_DATASET_PATH="$BASE_PATH/dataset/transformed/classification/$DATASET_NAME.csv"
     TEST_DATASET_PARAM=""
     if [[ $TRAIN == "yes" ]]; then
+        FEATURES_DATASET_PATH="$BASE_PATH/dataset/features/train/$SPLIT/$MAX_FEATURES-features/$MODEL/$DATASET_NAME.txt"
+        TRAIN_DATASET_PATH="$BASE_PATH/dataset/transformed/classification/train/$SPLIT/$DATASET_NAME.csv"
+        TEST_DATASET_PARAM="-vf $BASE_PATH/dataset/transformed/classification/test/$SPLIT/$DATASET_NAME.csv"
+
         if [[ $CV != "loo" ]]; then
             BUILD_MODEL_SCRIPT=build_classification_model.py
         fi
-        TRAIN_DATASET_PATH="$BASE_PATH/dataset/transformed/classification/train/$SPLIT/$DATASET_NAME.csv"
-        TEST_DATASET_PARAM="-vf $BASE_PATH/dataset/transformed/classification/test/$SPLIT/$DATASET_NAME.csv"
     fi
 
     $BASE_PATH/python_code/tools/$BUILD_MODEL_SCRIPT \
