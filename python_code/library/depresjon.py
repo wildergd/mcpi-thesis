@@ -46,7 +46,11 @@ def remove_days_with_insufficient_data(df: pd.DataFrame) -> pd.DataFrame:
 def get_measured_days(df: pd.DataFrame, subject: int) -> pd.DataFrame:
     return df.loc[subject].days
 
-def read_activity_dataset(path: str, days: int) -> pd.DataFrame:
+def read_activity_dataset(
+    path: str,
+    days: int,
+    max_dates: int = 11,
+) -> pd.DataFrame:
     df_row = pd.read_csv(
         path,
         parse_dates=['timestamp', 'date'],
@@ -67,7 +71,7 @@ def read_activity_dataset(path: str, days: int) -> pd.DataFrame:
     # extract data  only for the number of days measured
     return extract_data_for_days_measured(
         df_row,
-        min(11, max(max_days_measured, days))
+        min(max_dates, max(max_days_measured, days))
     )
     
 def read_scores_dataset(path: str) -> pd.DataFrame:
@@ -75,3 +79,32 @@ def read_scores_dataset(path: str) -> pd.DataFrame:
         path,
         index_col = 'number'
     )
+    
+def check_activity_variation(
+    df: pd.DataFrame,
+    column: str = 'activity',
+    initial_state: int = 0
+):
+    std = df[column].std()
+    mean = df[column].mean()
+    prev_val = initial_state
+    
+    def check_variation_values(values):
+        if values.shape[0] < 2:
+            return initial_state
+        
+        nonlocal prev_val
+        
+        before, after = values[0], values[1]
+        diff = after - before
+        print(abs(diff))
+        if  abs(diff) >= std:
+            if diff < 0:
+                prev_val = 0
+                return 0
+            if diff > 0:
+                prev_val = 1
+                return 1
+        return prev_val
+    
+    return check_variation_values
