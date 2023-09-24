@@ -92,7 +92,7 @@ if __name__ == '__main__':
         print(f' SPLIT_SET: {train_split}')
     else:
         print(f' SPLIT_SET: ALL DATA')
-    print(f' Parallel Jobs: {n_jobs}')
+    print(f' PARALLEL JOBS: {n_jobs}')
     print('='*100)
     print()
     
