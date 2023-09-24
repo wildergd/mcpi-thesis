@@ -28,9 +28,10 @@ def get_important_features(model, df):
 def get_dataframe_summarized(
     df: pd.DataFrame,
     group_frequency: str,
-    summarize_method: str
+    summarize_method: str,
+    **kwargs
 ) -> pd.DataFrame:
-    return getattr(df.groupby(pd.Grouper(freq=group_frequency)).activity, summarize_method)().reset_index()
+    return getattr(df.groupby(pd.Grouper(freq=group_frequency)).activity, summarize_method)(**kwargs).reset_index()
 
 #
 def standarize(

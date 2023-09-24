@@ -36,6 +36,12 @@ then
     $BASE_DIR/python_code/tools/feature_selection.py -f $BASE_DIR/dataset/transformed/classification/features_all_1H_mean_standarized_zscore-robust_outliers_no.csv -m $MODEL -mf $MAX_FEATURES -cv $CV
     $BASE_DIR/python_code/tools/feature_selection.py -f $BASE_DIR/dataset/transformed/classification/features_all_1H_mean_standarized_zscore-robust_outliers_yes.csv -m $MODEL -mf $MAX_FEATURES -cv $CV
 
+    # hourly data sumarized by using the median
+    $BASE_DIR/python_code/tools/feature_selection.py -f $BASE_DIR/dataset/transformed/classification/features_all_1H_median_standarized_zscore_outliers_no.csv -m $MODEL -mf $MAX_FEATURES -cv $CV
+    $BASE_DIR/python_code/tools/feature_selection.py -f $BASE_DIR/dataset/transformed/classification/features_all_1H_median_standarized_zscore_outliers_yes.csv -m $MODEL -mf $MAX_FEATURES -cv $CV
+    # $BASE_DIR/python_code/tools/feature_selection.py -f $BASE_DIR/dataset/transformed/classification/features_all_1H_median_standarized_zscore-robust_outliers_no.csv -m $MODEL -mf $MAX_FEATURES -cv $CV
+    # $BASE_DIR/python_code/tools/feature_selection.py -f $BASE_DIR/dataset/transformed/classification/features_all_1H_median_standarized_zscore-robust_outliers_yes.csv -m $MODEL -mf $MAX_FEATURES -cv $CV
+
     # daily data sumarized by using the sum
     $BASE_DIR/python_code/tools/feature_selection.py -f $BASE_DIR/dataset/transformed/classification/features_all_1D_sum_standarized_zscore_outliers_no.csv -m $MODEL -mf $MAX_FEATURES -cv $CV
     $BASE_DIR/python_code/tools/feature_selection.py -f $BASE_DIR/dataset/transformed/classification/features_all_1D_sum_standarized_zscore_outliers_yes.csv -m $MODEL -mf $MAX_FEATURES -cv $CV
@@ -60,6 +66,10 @@ else
     $BASE_DIR/python_code/tools/feature_selection.py -f $BASE_DIR/dataset/transformed/classification/train/$TRAIN_SPLIT/features_all_1H_mean_standarized_zscore-robust_outliers_no.csv -m $MODEL -mf $MAX_FEATURES -to yes -cv $CV
     $BASE_DIR/python_code/tools/feature_selection.py -f $BASE_DIR/dataset/transformed/classification/train/$TRAIN_SPLIT/features_all_1H_mean_standarized_zscore-robust_outliers_yes.csv -m $MODEL -mf $MAX_FEATURES -to yes -cv $CV
 
+    # hourly data sumarized by using the median
+    $BASE_DIR/python_code/tools/feature_selection.py -f $BASE_DIR/dataset/transformed/classification/train/$TRAIN_SPLIT/features_all_1H_median_standarized_zscore_outliers_no.csv -m $MODEL -mf $MAX_FEATURES -to yes -cv $CV
+    $BASE_DIR/python_code/tools/feature_selection.py -f $BASE_DIR/dataset/transformed/classification/train/$TRAIN_SPLIT/features_all_1H_median_standarized_zscore_outliers_yes.csv -m $MODEL -mf $MAX_FEATURES -to yes -cv $CV
+    
     # daily data sumarized by using the sum
     $BASE_DIR/python_code/tools/feature_selection.py -f $BASE_DIR/dataset/transformed/classification/train/$TRAIN_SPLIT/features_all_1D_sum_standarized_zscore_outliers_no.csv -m $MODEL -mf $MAX_FEATURES -to yes -cv $CV
     $BASE_DIR/python_code/tools/feature_selection.py -f $BASE_DIR/dataset/transformed/classification/train/$TRAIN_SPLIT/features_all_1D_sum_standarized_zscore_outliers_yes.csv -m $MODEL -mf $MAX_FEATURES -to yes -cv $CV
