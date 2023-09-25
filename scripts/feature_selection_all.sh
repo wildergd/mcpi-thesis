@@ -26,22 +26,27 @@ IFS=',' read -ra MODELS_LIST <<< $MODELS
 for MODEL in ${MODELS_LIST[@]}
 do
     # full dataset without split
+    sh feature_selection.sh -m $MODEL -x 5 -v $CV
     sh feature_selection.sh -m $MODEL -x 10 -v $CV
     sh feature_selection.sh -m $MODEL -x 20 -v $CV
 
     # 80-20 split
+    sh feature_selection.sh -m $MODEL -x 5 -s '80-20' -v $CV
     sh feature_selection.sh -m $MODEL -x 10 -s '80-20' -v $CV
     sh feature_selection.sh -m $MODEL -x 20 -s '80-20' -v $CV
 
     # 80-20 split with adversarial validation
+    sh feature_selection.sh -m $MODEL -x 5 -s '80-20_av' -v $CV
     sh feature_selection.sh -m $MODEL -x 10 -s '80-20_av' -v $CV
     sh feature_selection.sh -m $MODEL -x 20 -s '80-20_av' -v $CV
 
     # 70-30 split
+    sh feature_selection.sh -m $MODEL -x 5 -s '70-30' -v $CV
     sh feature_selection.sh -m $MODEL -x 10 -s '70-30' -v $CV
     sh feature_selection.sh -m $MODEL -x 20 -s '70-30' -v $CV
     
     # 70-30 split with adversarial validation
+    sh feature_selection.sh -m $MODEL -x 5 -s '70-30_av' -v $CV
     sh feature_selection.sh -m $MODEL -x 10 -s '70-30_av' -v $CV
     sh feature_selection.sh -m $MODEL -x 20 -s '70-30_av' -v $CV
 done

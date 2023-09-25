@@ -58,7 +58,7 @@ def extract_cv_split(file_path: str):
 
 def extract_max_features(file_path: str):
     split_part = file_path.split(sep)[-2]
-    if re.match(r'^\d{2}-features$', split_part):
+    if re.match(r'^\d+-features$', split_part):
         return split_part 
     return None
 

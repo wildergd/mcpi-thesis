@@ -58,7 +58,7 @@ def extract_cv_split(file_path: str):
 
 def extract_max_features(file_path: str):
     split_part = file_path.split(sep)[-2]
-    if re.match(r'^\d{2}-features$', split_part):
+    if re.match(r'^\d+-features$', split_part):
         return split_part 
     return None
 
@@ -76,7 +76,7 @@ if __name__ == '__main__':
     dataset_name = path.basename(train_file).split('.')[0]
     max_features = extract_max_features(path.dirname(features_file))
     cv_split = extract_cv_split(path.dirname(test_file)) if test_file is not None else None
-
+    
     # model output filename
     model_output_filename = f'model__{classification_model}__{dataset_name}__{max_features}__loo.skops'
     results_output_filename = f'{results_output_folder}/classification_models_scores_loo.csv'

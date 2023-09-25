@@ -32,6 +32,10 @@ IFS=',' read -ra MODELS_LIST <<< $MODELS
 if [[ $TRAIN == "yes" ]]; then
     for MODEL in ${MODELS_LIST[@]}
     do
+        sh build_classification_model.sh -m $MODEL -x 5 -s 70-30 -t $TRAIN -v $CV
+        sh build_classification_model.sh -m $MODEL -x 5 -s 70-30_av -t $TRAIN -v $CV
+        sh build_classification_model.sh -m $MODEL -x 5 -s 80-20 -t $TRAIN -v $CV
+        sh build_classification_model.sh -m $MODEL -x 5 -s 80-20_av -t $TRAIN -v $CV
         sh build_classification_model.sh -m $MODEL -x 10 -s 70-30 -t $TRAIN -v $CV
         sh build_classification_model.sh -m $MODEL -x 10 -s 70-30_av -t $TRAIN -v $CV
         sh build_classification_model.sh -m $MODEL -x 10 -s 80-20 -t $TRAIN -v $CV
@@ -44,6 +48,7 @@ if [[ $TRAIN == "yes" ]]; then
 else
     for MODEL in ${MODELS_LIST[@]}
     do
+        sh build_classification_model.sh -m $MODEL -x 5 -t $TRAIN -v $CV
         sh build_classification_model.sh -m $MODEL -x 10 -t $TRAIN -v $CV
         sh build_classification_model.sh -m $MODEL -x 20 -t $TRAIN -v $CV
     done
