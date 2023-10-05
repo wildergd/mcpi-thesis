@@ -7,7 +7,7 @@ SCRIPT_DIR = path.dirname(path.abspath(__file__))
 sys.path.append(path.dirname(SCRIPT_DIR))
 sys.dont_write_bytecode = True
 
-from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter, BooleanOptionalAction
 import warnings
 import re
 import numpy as np
@@ -34,6 +34,8 @@ parser.add_argument(
     default = 'nearcent',
     choices = ['rlo', 'rf', 'svm', 'sgd', 'nearcent', 'adaboost']
 )
+parser.add_argument('-nsm', '--no-save-model', default=False, type=bool, action=BooleanOptionalAction, help='Save model')
+parser.add_argument('-nsr', '--no-save-results', default=False, type=bool, action=BooleanOptionalAction, help='Save results')
 args = vars(parser.parse_args())
 
 # Set up parameters
@@ -41,6 +43,8 @@ features_file = args['features_file']
 train_file = args['train_file']
 test_file = args['test_file']
 classification_model = args['classification_model']
+save_model_file = not args['no_save_model']
+save_results = not args['no_save_results']
 seed = 90
 
 def predict_proba(model, features):
@@ -154,8 +158,9 @@ if __name__ == '__main__':
     # refit model using all data
     model.fit(features, target)
 
-    # save trained model    
-    save_model(model, path.abspath(f'{models_output_folder}/train/{model_output_filename}'))
+    # save trained model
+    if save_model_file:
+        save_model(model, path.abspath(f'{models_output_folder}/train/{model_output_filename}'))
     
     if use_test_set(test_file):
         # validate model against test set
@@ -254,31 +259,32 @@ if __name__ == '__main__':
         ]
     )
     
-    # check if report exists
-    if path.exists(results_output_filename) and path.isfile(results_output_filename):
-        df_results = pd.read_csv(results_output_filename)
+    if save_results:
+        # check if report exists
+        if path.exists(results_output_filename) and path.isfile(results_output_filename):
+            df_results = pd.read_csv(results_output_filename)
     
-    # remove existing rows for current dataset, model and split
-    filter = (df_results['dataset'] == dataset_name) & (df_results['model'] == classification_model) & (df_results['max_features'] == max_features)
-    filter_w_split = filter & (df_results['split'] == cv_split)
-    final_filters = filter_w_split if use_test_set(test_file) else filter
-    df_results = df_results.drop(df_results[final_filters].index).reset_index(drop = True)
+        # remove existing rows for current dataset, model and split
+        filter = (df_results['dataset'] == dataset_name) & (df_results['model'] == classification_model) & (df_results['max_features'] == max_features)
+        filter_w_split = filter & (df_results['split'] == cv_split)
+        final_filters = filter_w_split if use_test_set(test_file) else filter
+        df_results = df_results.drop(df_results[final_filters].index).reset_index(drop = True)
     
-    df_results.loc[len(df_results)] = results_data
+        df_results.loc[len(df_results)] = results_data
     
-    # write report to file
-    if not path.exists(results_output_folder) or not path.isdir(results_output_folder):
-        makedirs(results_output_folder)
+        # write report to file
+        if not path.exists(results_output_folder) or not path.isdir(results_output_folder):
+            makedirs(results_output_folder)
     
-    df_results.to_csv(
-        path.abspath(results_output_filename),
-        index = False,
-        float_format = '%.4f'
-    )
+        df_results.to_csv(
+            path.abspath(results_output_filename),
+            index = False,
+            float_format = '%.4f'
+        )
     
-    print()
+        print()
 
-    # save final model    
-    save_model(model, path.abspath(f'{models_output_folder}/final/{model_output_filename}'))
+        # save final model    
+        save_model(model, path.abspath(f'{models_output_folder}/final/{model_output_filename}'))
     
     print()

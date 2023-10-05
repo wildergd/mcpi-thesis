@@ -7,7 +7,7 @@ SCRIPT_DIR = path.dirname(path.abspath(__file__))
 sys.path.append(path.dirname(SCRIPT_DIR))
 sys.dont_write_bytecode = True
 
-from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter, BooleanOptionalAction
 import warnings
 import re
 import numpy as np
@@ -33,6 +33,8 @@ parser.add_argument(
     default = 'nearcent',
     choices = ['rlo', 'rf', 'svm', 'sgd', 'nearcent', 'adaboost']
 )
+parser.add_argument('-nsm', '--no-save-model', default=False, type=bool, action=BooleanOptionalAction, help='Save model')
+parser.add_argument('-nsr', '--no-save-results', default=False, type=bool, action=BooleanOptionalAction, help='Save results')
 args = vars(parser.parse_args())
 
 # Set up parameters
@@ -40,6 +42,8 @@ features_file = args['features_file']
 train_file = args['train_file']
 test_file = args['test_file']
 classification_model = args['classification_model']
+save_model_file = not args['no_save_model']
+save_results = not args['no_save_results']
 seed = 90
 
 def predict_proba(model, features):
@@ -102,7 +106,8 @@ if __name__ == '__main__':
     model.fit(features_train, target_train)
     
     # save trained model    
-    save_model(model, path.abspath(f'{models_output_folder}/train/{model_output_filename}'))
+    if save_model_file:
+        save_model(model, path.abspath(f'{models_output_folder}/train/{model_output_filename}'))
 
     # model summary
     # predictions train
@@ -157,104 +162,106 @@ if __name__ == '__main__':
     )
     print()
     print()
-
-    # generate model reports
-    df_results = pd.DataFrame(
-        columns = [
-            'dataset',
-            'split',
-            'model',
-            'max_features',
-            'num_features',
-            'stage',
-            'accuracy',
-            'sensitivity',
-            'specificity',
-            'precision',
-            'f1-score',
-            'CM(TP:TN:FP:FN)',
-            'model_file'
-        ]
-    )
     
-    # check if report exists
-    if path.exists(results_output_filename) and path.isfile(results_output_filename):
-        df_results = pd.read_csv(results_output_filename)
-    
-    # remove existing rows for current dataset, model and split
-    filter = (df_results['dataset'] == dataset_name) & (df_results['model'] == classification_model) & (df_results['split'] == cv_split)
-    df_results = df_results.drop(df_results[filter].index).reset_index(drop = True)
-    
-    # export train results
-    train_results = classification_report(
-        target_train,
-        train_pred,
-        output_dict = True
-    )
-    df_results.loc[len(df_results)] = {
-        'dataset': dataset_name,
-        'split': cv_split,
-        'model': classification_model,
-        'max_features': max_features,
-        'num_features': len(features_names),
-        'stage': 'train',
-        'accuracy': train_results['accuracy'],
-        'sensitivity': train_results['1']['recall'],
-        'specificity': train_results['0']['recall'],
-        'precision': train_results['weighted avg']['precision'],
-        'f1-score': train_results['weighted avg']['f1-score'],
-        'CM(TP:TN:FP:FN)': f'{cm_train[0][0]}:{cm_train[1][1]}:{cm_train[1][0]}:{cm_train[0][1]}',
-        'model_file': model_output_filename
-    }
-
-    # export test results
-    test_results = classification_report(
-        target_test,
-        test_pred,
-        output_dict = True
-    )
-    df_results.loc[len(df_results)] = {
-        'dataset': dataset_name,
-        'split': cv_split,
-        'model': classification_model,
-        'max_features': max_features,
-        'num_features': len(features_names),
-        'stage': 'test',
-        'accuracy': test_results['accuracy'],
-        'sensitivity': test_results['1']['recall'],
-        'specificity': test_results['0']['recall'],
-        'precision': test_results['weighted avg']['precision'],
-        'f1-score': test_results['weighted avg']['f1-score'],
-        'CM(TP:TN:FP:FN)': f'{cm_test[0][0]}:{cm_test[1][1]}:{cm_test[1][0]}:{cm_test[0][1]}',
-        'model_file': model_output_filename
-    }
-    
-    # write report to file
-    if not path.exists(results_output_folder) or not path.isdir(results_output_folder):
-        makedirs(results_output_folder)
+    if save_results:
+        # generate model reports
+        df_results = pd.DataFrame(
+            columns = [
+                'dataset',
+                'split',
+                'model',
+                'max_features',
+                'num_features',
+                'stage',
+                'accuracy',
+                'sensitivity',
+                'specificity',
+                'precision',
+                'f1-score',
+                'CM(TP:TN:FP:FN)',
+                'model_file'
+            ]
+        )
         
-    df_results.to_csv(
-        path.abspath(results_output_filename),
-        index = False,
-        float_format = '%.4f'
-    )
+        # check if report exists
+        if path.exists(results_output_filename) and path.isfile(results_output_filename):
+            df_results = pd.read_csv(results_output_filename)
+        
+        # remove existing rows for current dataset, model and split
+        filter = (df_results['dataset'] == dataset_name) & (df_results['model'] == classification_model) & (df_results['split'] == cv_split)
+        df_results = df_results.drop(df_results[filter].index).reset_index(drop = True)
+        
+        # export train results
+        train_results = classification_report(
+            target_train,
+            train_pred,
+            output_dict = True
+        )
+        df_results.loc[len(df_results)] = {
+            'dataset': dataset_name,
+            'split': cv_split,
+            'model': classification_model,
+            'max_features': max_features,
+            'num_features': len(features_names),
+            'stage': 'train',
+            'accuracy': train_results['accuracy'],
+            'sensitivity': train_results['1']['recall'],
+            'specificity': train_results['0']['recall'],
+            'precision': train_results['weighted avg']['precision'],
+            'f1-score': train_results['weighted avg']['f1-score'],
+            'CM(TP:TN:FP:FN)': f'{cm_train[0][0]}:{cm_train[1][1]}:{cm_train[1][0]}:{cm_train[0][1]}',
+            'model_file': model_output_filename
+        }
 
-    print()
+        # export test results
+        test_results = classification_report(
+            target_test,
+            test_pred,
+            output_dict = True
+        )
+        df_results.loc[len(df_results)] = {
+            'dataset': dataset_name,
+            'split': cv_split,
+            'model': classification_model,
+            'max_features': max_features,
+            'num_features': len(features_names),
+            'stage': 'test',
+            'accuracy': test_results['accuracy'],
+            'sensitivity': test_results['1']['recall'],
+            'specificity': test_results['0']['recall'],
+            'precision': test_results['weighted avg']['precision'],
+            'f1-score': test_results['weighted avg']['f1-score'],
+            'CM(TP:TN:FP:FN)': f'{cm_test[0][0]}:{cm_test[1][1]}:{cm_test[1][0]}:{cm_test[0][1]}',
+            'model_file': model_output_filename
+        }
+        
+        # write report to file
+        if not path.exists(results_output_folder) or not path.isdir(results_output_folder):
+            makedirs(results_output_folder)
+            
+        df_results.to_csv(
+            path.abspath(results_output_filename),
+            index = False,
+            float_format = '%.4f'
+        )
+
+        print()
     
-    # refit model using all data
-    features = pd.concat([
-        features_train,
-        features_test
-    ])
-    
-    target = pd.concat([
-        target_train,
-        target_test
-    ])
-    
-    model.fit(features, target)
-    
-    # persist final model     
-    save_model(model, path.abspath(f'{models_output_folder}/final/{model_output_filename}'))
+    if save_model_file:
+        # refit model using all data
+        features = pd.concat([
+            features_train,
+            features_test
+        ])
+        
+        target = pd.concat([
+            target_train,
+            target_test
+        ])
+        
+        model.fit(features, target)
+        
+        # persist final model     
+        save_model(model, path.abspath(f'{models_output_folder}/final/{model_output_filename}'))
     
     print()
