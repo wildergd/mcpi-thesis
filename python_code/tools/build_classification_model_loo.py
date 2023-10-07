@@ -34,8 +34,8 @@ parser.add_argument(
     default = 'nearcent',
     choices = ['rlo', 'rf', 'svm', 'sgd', 'nearcent', 'adaboost']
 )
-parser.add_argument('-nsm', '--no-save-model', default=False, type=bool, action=BooleanOptionalAction, help='Save model')
-parser.add_argument('-nsr', '--no-save-results', default=False, type=bool, action=BooleanOptionalAction, help='Save results')
+parser.add_argument('-nsm', '--no-save-model', default=False, type=bool, action=BooleanOptionalAction, help='Don\'t save model')
+parser.add_argument('-nsr', '--no-save-results', default=False, type=bool, action=BooleanOptionalAction, help='Don\'t save results')
 args = vars(parser.parse_args())
 
 # Set up parameters
