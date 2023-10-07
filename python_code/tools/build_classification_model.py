@@ -69,7 +69,7 @@ def extract_max_features(file_path: str):
 if __name__ == '__main__':
     # output paths
     DATASETS_PATH = path.realpath(path.join(SCRIPT_DIR, '..', '..', 'dataset'))
-    RESULTS_PATH = path.realpath(path.join(SCRIPT_DIR, '..', '..', 'results'))
+    RESULTS_PATH = path.realpath(path.join(SCRIPT_DIR, '..', '..', 'results', 'classification'))
     results_output_folder = f'{RESULTS_PATH}/scores'
     models_output_folder = f'{RESULTS_PATH}/models'
     
