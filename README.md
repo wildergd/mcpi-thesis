@@ -19,7 +19,7 @@ $ pip install -r python-code/requirements.txt
 $ scripts/generate_classification_datasets.sh
 ```
 
-### spliting datasets
+### Spliting datasets
 
 ```bash
 $ scripts/split_classification_datasets.sh
