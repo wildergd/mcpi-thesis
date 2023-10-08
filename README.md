@@ -53,5 +53,19 @@ $ scripts/build_classification_models.sh
 $ scripts/build_forecasting_models.sh
 ```
 
+## Results analysis
+
+### Classification models results
+
+```bash
+$ jupyter notebook python-code/notebooks/classification_models_results_analysis.ipynb
+```
+
+### Forecasting Classification results
+
+```bash
+$ jupyter notebook python-code/notebooks/forecasting_results_analysis.ipynb
+```
+
 ## References
 - Garcia-Ceja, E., Riegler, M., Jakobsen, P., Tørresen, J., Nordgreen, T., Oedegaard, K. J., & Fasmer, O. B. (2018). Depresjon: A motor activity database of depression episodes in unipolar and bipolar patients. Proceedings of the 9th ACM Multimedia Systems Conference, MMSys 2018, 472–477. [https://doi.org/10.1145/3204949.3208125](https://doi.org/10.1145/3204949.3208125)
