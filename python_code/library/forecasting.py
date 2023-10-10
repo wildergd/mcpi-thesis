@@ -7,7 +7,9 @@ from darts.models.forecasting.prophet_model import Prophet
 from darts.models.forecasting.theta import Theta
 from darts.models.forecasting.xgboost import XGBModel
 from darts.timeseries import TimeSeries
+from darts.utils.utils import ModelMode, SeasonalityMode
 from datetime import timedelta
+from sklearn.model_selection import ParameterGrid
 from typing import Any, Tuple, Union, Literal, Callable
 
 def split_time_series(
@@ -73,13 +75,52 @@ def tune_theta_model(
 
 #
 def tune_phophet_model(
-    model: Prophet,
     data: TimeSeries,
     metric: Literal['RMSE', 'MSE', 'MAPE'] = 'MAPE',
     criteria: Callable = min,
     test_days: int = 1,
     **kwargs
 ) -> Tuple:
+    params_grid = {
+        'seasonality_mode': ('multiplicative','additive'),
+        'changepoint_prior_scale': [0.1, 0.2, 0.3, 0.4, 0.5],
+        'n_changepoints': [24, 72, 120, 168]
+    }
+    grid = ParameterGrid(params_grid)
+    best_score = float('inf') if criteria == min else float('-inf')
+    best_params = {}
+    for params in grid:
+        prophet_model = Prophet(
+            seasonality_mode = params['seasonality_mode'],
+            changepoint_prior_scale = params['changepoint_prior_scale'],
+            n_changepoints = params['n_changepoints'],
+            daily_seasonality = True,
+            weekly_seasonality = True,
+            yearly_seasonality = False,
+            interval_width = 0.95,
+            **kwargs
+        )
+        
+        scores, _ = evaluate_model(
+            model = prophet_model,
+            data = data,
+            test_days = test_days,
+        )
+        
+        model_score = extract_metric(scores, metric)
+        if criteria(model_score, best_score) == model_score:
+            best_score = model_score
+            best_params = params
+
+    return Prophet(**best_params, **kwargs), best_params
+
+#
+def tune_naive_seasonal_model(
+    model: NaiveSeasonal,
+    data: TimeSeries,
+    metric: Literal['RMSE', 'MSE', 'MAPE'] = 'MAPE',
+    criteria: Callable = min,
+) -> Tuple:    
     return model,
 
 #
@@ -95,29 +136,96 @@ def tune_naive_seasonal_model(
 
 #
 def tune_exponential_smoothing_model(
-    model: ExponentialSmoothing,
     data: TimeSeries,
     metric: Literal['RMSE', 'MSE', 'MAPE'] = 'MAPE',
     criteria: Callable = min,
     test_days: int = 1,
     **kwargs
 ) -> Tuple:
-    return model,
+    params_grid = {
+        'trend': (ModelMode.ADDITIVE, ModelMode.MULTIPLICATIVE, ModelMode.NONE),
+        'damped': [True, False],
+        'seasonality': (SeasonalityMode.ADDITIVE, SeasonalityMode.MULTIPLICATIVE, SeasonalityMode.NONE),
+        'smoothing_level': np.linspace(0, 1, 20),
+        'smoothing_trend': np.linspace(0, 1, 20),
+        'smoothing_seasonal': np.linspace(0, 1, 20),
+    }
+    grid = ParameterGrid(params_grid)
+    best_score = float('inf') if criteria == min else float('-inf')
+    best_params = {}
+    for params in grid:
+        try:
+            model = ExponentialSmoothing(
+                trend = params['trend'],
+                damped = params['damped'] if params['trend'] != ModelMode.NONE else False,
+                seasonal = params['seasonality'],
+                smoothing_level = params['smoothing_level'],
+                smoothing_trend = params['smoothing_trend'] if params['trend'] != ModelMode.NONE else None,
+                smoothing_seasonal = params['smoothing_seasonal'] if params['seasonality'] != SeasonalityMode.NONE else None,
+                **kwargs
+            )
+            
+            scores, _ = evaluate_model(
+                model = model,
+                data = data,
+                test_days = test_days,
+            )
+            
+            model_score = extract_metric(scores, metric)
+            if criteria(model_score, best_score) == model_score:
+                best_score = model_score
+                best_params = params
+        except:
+            continue
+        
+    best_model = ExponentialSmoothing(
+        trend = best_params['trend'],
+        damped = best_params['damped'] if best_params['trend'] != ModelMode.NONE else False,
+        seasonal = best_params['seasonality'],
+        smoothing_level = best_params['smoothing_level'],
+        smoothing_trend = best_params['smoothing_trend'] if best_params['trend'] != ModelMode.NONE else None,
+        smoothing_seasonal = best_params['smoothing_seasonal'] if best_params['seasonality'] != SeasonalityMode.NONE else None,
+        **kwargs
+    )
+    
+    return best_model, best_params
 
 #
 def tune_fft_model(
-    model: FFT,
     data: TimeSeries,
     metric: Literal['RMSE', 'MSE', 'MAPE'] = 'MAPE',
     criteria: Callable = min,
     test_days: int = 1,
     **kwargs
 ) -> Tuple:
-    return model,
+    freqs_to_keep = np.arange(1, 168)
+    best_score = float('inf') if criteria == min else float('-inf')
+    best_freq_keep = 0
+
+    for freqs in freqs_to_keep:
+        model = FFT(
+            nr_freqs_to_keep = freqs,
+            **kwargs
+        )
+        
+        scores, _ = evaluate_model(
+            model = model,
+            data = data,
+            test_days = test_days
+        )
+
+        model_score = extract_metric(scores, metric)
+        if criteria(model_score, best_score) == model_score:
+            best_score = model_score
+            best_freq_keep = freqs
+            
+    best_fft_model = FFT(best_freq_keep, **kwargs)
+    
+    return best_fft_model, best_freq_keep
 
 #
 def tune_xgboost_model(
-    model: Prophet,
+    model: XGBModel,
     data: TimeSeries,
     metric: Literal['RMSE', 'MSE', 'MAPE'] = 'MAPE',
     criteria: Callable = min,
@@ -133,6 +241,7 @@ def tune_model(
     metric: Literal['RMSE', 'MSE', 'MAPE'] = 'MAPE',
     criteria: Callable = min,
     test_days: int = 1,
+    random_state: int = None,
     **kwargs
 ) -> Tuple:    
     if isinstance(model, NaiveSeasonal):
@@ -147,17 +256,16 @@ def tune_model(
     
     if isinstance(model, ExponentialSmoothing):
         return tune_exponential_smoothing_model(
-            model = model,
             data = data,
             metric = metric,
             criteria = criteria,
             test_days = test_days,
+            random_state = random_state,
             **kwargs
         )
     
     if isinstance(model, FFT):
         return tune_fft_model(
-            model = model,
             data = data,
             metric = metric,
             criteria = criteria,
@@ -167,7 +275,6 @@ def tune_model(
     
     if isinstance(model, Prophet):
         return tune_phophet_model(
-            model = model,
             data = data,
             metric = metric,
             criteria = criteria,
@@ -192,6 +299,7 @@ def tune_model(
             metric = metric,
             criteria = criteria,
             test_days = test_days,
+            random_state = random_state,
             **kwargs
         )
     
@@ -204,6 +312,7 @@ def pick_best_forecast_model_for_ts(
     metric: Literal['RMSE', 'MSE', 'MAPE'] = 'MAPE',
     criteria: Callable = min,
     test_days: int = 1,
+    random_state: int = None,
     debug: bool = False,
     **kwargs
 ):
@@ -230,6 +339,7 @@ def pick_best_forecast_model_for_ts(
         metric = metric,
         criteria = criteria,
         test_days = test_days,
+        random_state = random_state,
         **kwargs
     )[0]
     
