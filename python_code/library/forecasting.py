@@ -146,9 +146,9 @@ def tune_exponential_smoothing_model(
         'trend': (ModelMode.ADDITIVE, ModelMode.MULTIPLICATIVE, ModelMode.NONE),
         'damped': [True, False],
         'seasonality': (SeasonalityMode.ADDITIVE, SeasonalityMode.MULTIPLICATIVE, SeasonalityMode.NONE),
-        'smoothing_level': np.linspace(0, 1, 20),
-        'smoothing_trend': np.linspace(0, 1, 20),
-        'smoothing_seasonal': np.linspace(0, 1, 20),
+        'smoothing_level': [None, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9],
+        'smoothing_trend': [None, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9],
+        'smoothing_seasonal': [None, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
     }
     grid = ParameterGrid(params_grid)
     best_score = float('inf') if criteria == min else float('-inf')

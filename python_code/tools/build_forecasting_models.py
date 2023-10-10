@@ -125,7 +125,7 @@ if __name__ == '__main__':
             data = ts_hourly_mean,
             test_days = 3,
             random_state = seed,
-            metric = 'RMSE'
+            # metric = 'RMSE'
         )
         
         # hourly activity sumarized using median
@@ -145,7 +145,7 @@ if __name__ == '__main__':
             data = ts_hourly_median,
             test_days = 3,
             random_state = seed,
-            metric = 'RMSE'
+            # metric = 'RMSE'
         )
 
         # generatings model scores dataset
