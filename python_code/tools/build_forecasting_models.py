@@ -69,8 +69,8 @@ def transform_dataset(
     return df_grouped.set_index('timestamp')
 
 # Set up parameters
-score_metric = not args['score_metric']
-criteria = args['criteria'].lowercase()
+score_metric = args['score_metric'].upper()
+criteria = args['criteria'].lower()
 save_model_file = not args['no_save_model']
 save_results = not args['no_save_results']
 seed = 90
