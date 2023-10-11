@@ -27,10 +27,11 @@ def evaluate_model(
     model: Any,
     data: TimeSeries,
     test_days: int = 1,
-    debug: bool = False
+    debug: bool = False,
+    **kwargs
 ) -> Tuple[dict, Any]:
     train, test = split_time_series(data, days = test_days)
-    model.fit(train)
+    model.fit(train, **kwargs)
     forecast = model.predict(len(test))
     
     scores = {
@@ -225,14 +226,41 @@ def tune_fft_model(
 
 #
 def tune_xgboost_model(
-    model: XGBModel,
     data: TimeSeries,
     metric: Literal['RMSE', 'MSE', 'MAPE'] = 'MAPE',
     criteria: Callable = min,
     test_days: int = 1,
     **kwargs
 ) -> Tuple:
-    return model,
+    params_grid = {
+        'lags': list(range(24, 192, 24)),
+    }
+    grid = ParameterGrid(params_grid)
+    best_score = float('inf') if criteria == min else float('-inf')
+    best_params = {}
+    for params in grid:
+        try:
+            model = XGBModel(
+                **params,
+                **kwargs
+            )
+            
+            scores, _ = evaluate_model(
+                model = model,
+                data = data,
+                test_days = test_days
+            )
+            
+            model_score = extract_metric(scores, metric)
+            if criteria(model_score, best_score) == model_score:
+                best_score = model_score
+                best_params = params
+        except:
+            continue
+
+    best_model = XGBModel(**best_params, **kwargs)
+    
+    return best_model, best_params
 
 # 
 def tune_model(
@@ -294,7 +322,6 @@ def tune_model(
     
     if isinstance(model, XGBModel):
         return tune_xgboost_model(
-            model = model,
             data = data,
             metric = metric,
             criteria = criteria,

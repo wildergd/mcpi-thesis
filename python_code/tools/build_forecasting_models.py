@@ -32,6 +32,18 @@ warnings.filterwarnings('ignore')
 
 # Parse command line arguments
 parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
+parser.add_argument(
+    '-sm', '--score-metric',
+    help='Score metric. One of: mape, mse, rmse.',
+    default = 'mape',
+    choices = ['mape', 'mse', 'rmse']
+)
+parser.add_argument(
+    '-c', '--criteria',
+    help='Score comparission criteria. One of: min, max.',
+    default = 'min',
+    choices = ['min', 'max']
+)
 parser.add_argument('-nsm', '--no-save-model', default=False, type=bool, action=BooleanOptionalAction, help='Don\'t save model')
 parser.add_argument('-nsr', '--no-save-results', default=False, type=bool, action=BooleanOptionalAction, help='Don\'t save results')
 args = vars(parser.parse_args())
@@ -57,6 +69,8 @@ def transform_dataset(
     return df_grouped.set_index('timestamp')
 
 # Set up parameters
+score_metric = not args['score_metric']
+criteria = args['criteria'].lowercase()
 save_model_file = not args['no_save_model']
 save_results = not args['no_save_results']
 seed = 90
@@ -88,6 +102,8 @@ if __name__ == '__main__':
 
     df_models_scores = pd.DataFrame(columns=[
         'number',
+        'score_metric',
+        'criteria',
         'best_model_mean',
         'score_best_model_mean',
         'model_file_mean',
@@ -125,7 +141,8 @@ if __name__ == '__main__':
             data = ts_hourly_mean,
             test_days = 3,
             random_state = seed,
-            # metric = 'RMSE'
+            metric = score_metric,
+            criteria = min if criteria == 'min' else max
         )
         
         # hourly activity sumarized using median
@@ -145,18 +162,21 @@ if __name__ == '__main__':
             data = ts_hourly_median,
             test_days = 3,
             random_state = seed,
-            # metric = 'RMSE'
+            metric = score_metric,
+            criteria = min if criteria == 'min' else max
         )
 
         # generatings model scores dataset
         df_models_scores.loc[len(df_models_scores)] = {
             'number': file,
+            'score_metric': score_metric,
+            'criteria': criteria,
             'best_model_mean': best_model_mean.__class__.__name__,
             'score_best_model_mean': score_best_model_mean,
-            'model_file_mean': f'{file}__hourly_mean__{best_model_mean.__class__.__name__}.pkl',
+            'model_file_mean': f'{file}__hourly_mean__{best_model_mean.__class__.__name__}__{score_metric}_{criteria}.pkl',
             'best_model_median': best_model_median.__class__.__name__,
             'score_best_model_median': score_best_model_median,
-            'model_file_median': f'{file}__hourly_median__{best_model_median.__class__.__name__}.pkl'
+            'model_file_median': f'{file}__hourly_median__{best_model_median.__class__.__name__}__{score_metric}_{criteria}.pkl'
         }        
 
         # save models
@@ -165,8 +185,8 @@ if __name__ == '__main__':
             if not path.exists(models_output_folder) or not path.isdir(models_output_folder):
                 makedirs(models_output_folder)
 
-            best_model_mean.save(path.abspath(f'{models_output_folder}/{file}__hourly_mean__{best_model_mean.__class__.__name__}.pkl'))
-            best_model_median.save(path.abspath(f'{models_output_folder}/{file}__hourly_median__{best_model_median.__class__.__name__}.pkl'))
+            best_model_mean.save(path.abspath(f'{models_output_folder}/{file}__hourly_mean__{best_model_mean.__class__.__name__}__{score_metric}_{criteria}.pkl'))
+            best_model_median.save(path.abspath(f'{models_output_folder}/{file}__hourly_median__{best_model_median.__class__.__name__}__{score_metric}_{criteria}.pkl'))
             
         print()
 
@@ -178,7 +198,7 @@ if __name__ == '__main__':
             makedirs(results_output_folder)
             
         df_models_scores.to_csv(
-            path.abspath(f'{results_output_folder}/scores_forecasting_models.csv'),
+            path.abspath(f'{results_output_folder}/scores_forecasting_models__{score_metric}_{criteria}.csv'),
             index = False,
             float_format = '%.4f'
         )
