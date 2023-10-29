@@ -91,7 +91,7 @@ if __name__ == '__main__':
 
     # models to try
     available_models = [
-        NaiveSeasonal(K = 168),
+        NaiveSeasonal(K = 72),
         XGBModel(lags = 24, random_state = seed),
         ExponentialSmoothing(random_state = seed),
         Prophet(floor = 0),
@@ -139,6 +139,7 @@ if __name__ == '__main__':
         best_model_mean, score_best_model_mean = pick_best_forecast_model_for_ts(
             models = available_models,
             data = ts_hourly_mean,
+            cv = 3,
             test_days = 3,
             random_state = seed,
             metric = score_metric,
@@ -160,6 +161,7 @@ if __name__ == '__main__':
         best_model_median, score_best_model_median = pick_best_forecast_model_for_ts(
             models = available_models,
             data = ts_hourly_median,
+            cv = 3,
             test_days = 3,
             random_state = seed,
             metric = score_metric,
