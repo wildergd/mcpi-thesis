@@ -61,10 +61,16 @@ $ scripts/build_forecasting_models.sh
 $ jupyter notebook python-code/notebooks/classification_models_results_analysis.ipynb
 ```
 
+### forecasting models
+```bash
+$ jupyter notebook python-code/notebooks/forecasting_models.ipynb
+```
+
 ### Forecasting Classification results
 
 ```bash
-$ jupyter notebook python-code/notebooks/forecasting_results_analysis.ipynb
+$ jupyter notebook python-code/notebooks/deployment_results_analysis_mape.ipynb
+$ jupyter notebook python-code/notebooks/deployment_results_analysis_rmse.ipynb
 ```
 
 ## References
