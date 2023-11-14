@@ -1,0 +1,7 @@
+activity__fft_coefficient__attr_"real"__coeff_16
+activity__fft_coefficient__attr_"real"__coeff_99
+activity__fft_coefficient__attr_"imag"__coeff_30
+activity__fft_coefficient__attr_"imag"__coeff_94
+activity__fft_coefficient__attr_"imag"__coeff_97
+activity__fft_coefficient__attr_"abs"__coeff_10
+activity__fft_coefficient__attr_"abs"__coeff_30

@@ -1,0 +1,6 @@
+activity__variance_larger_than_standard_deviation
+activity__autocorrelation__lag_4
+activity__cwt_coefficients__coeff_10__w_10__widths_(2, 5, 10, 20)
+activity__change_quantiles__f_agg_"mean"__isabs_False__qh_1.0__ql_0.0
+activity__change_quantiles__f_agg_"mean"__isabs_True__qh_1.0__ql_0.2
+activity__agg_linear_trend__attr_"rvalue"__chunk_len_5__f_agg_"var"

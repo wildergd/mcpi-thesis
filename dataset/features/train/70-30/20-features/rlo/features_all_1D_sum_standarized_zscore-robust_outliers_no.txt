@@ -1,0 +1,7 @@
+activity__longest_strike_above_mean
+activity__number_peaks__n_3
+activity__cwt_coefficients__coeff_5__w_10__widths_(2, 5, 10, 20)
+activity__cwt_coefficients__coeff_7__w_20__widths_(2, 5, 10, 20)
+activity__fft_coefficient__attr_"real"__coeff_5
+activity__fft_coefficient__attr_"angle"__coeff_54
+activity__friedrich_coefficients__coeff_2__m_3__r_30

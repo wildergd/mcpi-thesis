@@ -1,0 +1,4 @@
+activity__symmetry_looking__r_0.4
+activity__cwt_coefficients__coeff_0__w_5__widths_(2, 5, 10, 20)
+activity__cwt_coefficients__coeff_1__w_5__widths_(2, 5, 10, 20)
+activity__augmented_dickey_fuller__attr_"usedlag"__autolag_"AIC"

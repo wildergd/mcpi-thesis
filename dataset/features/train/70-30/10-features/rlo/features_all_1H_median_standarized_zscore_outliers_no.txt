@@ -1,0 +1,5 @@
+activity__c3__lag_1
+activity__c3__lag_2
+activity__cwt_coefficients__coeff_2__w_2__widths_(2, 5, 10, 20)
+activity__fft_coefficient__attr_"imag"__coeff_94
+activity__fft_coefficient__attr_"abs"__coeff_87

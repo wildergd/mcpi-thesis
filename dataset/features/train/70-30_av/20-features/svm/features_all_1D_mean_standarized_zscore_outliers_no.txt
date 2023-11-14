@@ -1,0 +1,7 @@
+activity__longest_strike_above_mean
+activity__absolute_maximum
+activity__spkt_welch_density__coeff_2
+activity__fft_coefficient__attr_"real"__coeff_91
+activity__fft_coefficient__attr_"imag"__coeff_27
+activity__fft_coefficient__attr_"imag"__coeff_97
+activity__fft_coefficient__attr_"angle"__coeff_72

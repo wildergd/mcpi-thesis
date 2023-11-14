@@ -1,0 +1,2 @@
+activity__change_quantiles__f_agg_"mean"__isabs_True__qh_1.0__ql_0.6
+activity__augmented_dickey_fuller__attr_"teststat"__autolag_"AIC"

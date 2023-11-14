@@ -1,0 +1,6 @@
+activity__ratio_value_number_to_time_series_length
+activity__cwt_coefficients__coeff_8__w_10__widths_(2, 5, 10, 20)
+activity__fft_coefficient__attr_"real"__coeff_23
+activity__fft_coefficient__attr_"imag"__coeff_33
+activity__energy_ratio_by_chunks__num_segments_10__segment_focus_9
+activity__count_below__t_0

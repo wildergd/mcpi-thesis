@@ -1,0 +1,5 @@
+activity__count_below_mean
+activity__fft_coefficient__attr_"real"__coeff_27
+activity__fft_coefficient__attr_"real"__coeff_99
+activity__fft_coefficient__attr_"imag"__coeff_8
+activity__fft_coefficient__attr_"abs"__coeff_22

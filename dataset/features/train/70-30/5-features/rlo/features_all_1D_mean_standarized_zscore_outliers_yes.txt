@@ -1,0 +1,2 @@
+activity__longest_strike_above_mean
+activity__friedrich_coefficients__coeff_0__m_3__r_30

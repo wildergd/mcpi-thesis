@@ -1,0 +1,9 @@
+activity__standard_deviation
+activity__c3__lag_1
+activity__cwt_coefficients__coeff_2__w_2__widths_(2, 5, 10, 20)
+activity__ar_coefficient__coeff_4__k_10
+activity__fft_coefficient__attr_"real"__coeff_9
+activity__fft_coefficient__attr_"real"__coeff_25
+activity__fft_coefficient__attr_"imag"__coeff_82
+activity__fft_coefficient__attr_"abs"__coeff_63
+activity__fft_coefficient__attr_"angle"__coeff_39

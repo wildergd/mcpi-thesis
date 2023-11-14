@@ -1,0 +1,3 @@
+activity__count_above_mean
+activity__cwt_coefficients__coeff_7__w_5__widths_(2, 5, 10, 20)
+activity__fft_coefficient__attr_"real"__coeff_27

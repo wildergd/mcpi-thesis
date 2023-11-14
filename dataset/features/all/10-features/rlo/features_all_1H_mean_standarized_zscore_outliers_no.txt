@@ -1,0 +1,6 @@
+activity__c3__lag_1
+activity__change_quantiles__f_agg_"var"__isabs_True__qh_0.6__ql_0.2
+activity__fft_coefficient__attr_"real"__coeff_31
+activity__fft_coefficient__attr_"imag"__coeff_46
+activity__fft_coefficient__attr_"abs"__coeff_9
+activity__friedrich_coefficients__coeff_0__m_3__r_30

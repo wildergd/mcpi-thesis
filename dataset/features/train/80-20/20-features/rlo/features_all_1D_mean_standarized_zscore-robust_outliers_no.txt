@@ -1,0 +1,6 @@
+activity__partial_autocorrelation__lag_4
+activity__index_mass_quantile__q_0.7
+activity__cwt_coefficients__coeff_6__w_20__widths_(2, 5, 10, 20)
+activity__change_quantiles__f_agg_"var"__isabs_True__qh_0.8__ql_0.2
+activity__friedrich_coefficients__coeff_2__m_3__r_30
+activity__lempel_ziv_complexity__bins_10

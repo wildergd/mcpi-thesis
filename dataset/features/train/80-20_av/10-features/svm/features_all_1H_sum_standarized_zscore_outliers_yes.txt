@@ -1,0 +1,6 @@
+activity__count_above_mean
+activity__change_quantiles__f_agg_"var"__isabs_True__qh_0.4__ql_0.2
+activity__fft_coefficient__attr_"real"__coeff_55
+activity__fft_coefficient__attr_"imag"__coeff_66
+activity__agg_linear_trend__attr_"rvalue"__chunk_len_5__f_agg_"mean"
+activity__number_crossing_m__m_1

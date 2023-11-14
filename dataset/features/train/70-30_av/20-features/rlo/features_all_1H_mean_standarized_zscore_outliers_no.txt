@@ -1,0 +1,3 @@
+activity__c3__lag_1
+activity__fft_coefficient__attr_"real"__coeff_31
+activity__max_langevin_fixed_point__m_3__r_30

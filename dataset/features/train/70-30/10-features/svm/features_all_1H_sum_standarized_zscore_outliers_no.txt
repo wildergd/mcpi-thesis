@@ -1,0 +1,7 @@
+activity__fft_coefficient__attr_"angle"__coeff_7
+activity__fft_coefficient__attr_"angle"__coeff_32
+activity__fft_coefficient__attr_"angle"__coeff_33
+activity__fft_coefficient__attr_"angle"__coeff_41
+activity__fft_coefficient__attr_"angle"__coeff_42
+activity__fft_coefficient__attr_"angle"__coeff_82
+activity__fft_coefficient__attr_"angle"__coeff_83

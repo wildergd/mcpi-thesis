@@ -1,0 +1,5 @@
+activity__absolute_maximum
+activity__c3__lag_1
+activity__fft_coefficient__attr_"angle"__coeff_39
+activity__fft_aggregated__aggtype_"centroid"
+activity__friedrich_coefficients__coeff_0__m_3__r_30

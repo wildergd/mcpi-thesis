@@ -1,0 +1,5 @@
+activity__number_cwt_peaks__n_1
+activity__cwt_coefficients__coeff_12__w_10__widths_(2, 5, 10, 20)
+activity__change_quantiles__f_agg_"var"__isabs_False__qh_0.8__ql_0.2
+activity__change_quantiles__f_agg_"var"__isabs_True__qh_0.6__ql_0.4
+activity__fft_coefficient__attr_"abs"__coeff_88

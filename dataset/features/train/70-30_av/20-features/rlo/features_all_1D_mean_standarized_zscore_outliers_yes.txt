@@ -1,0 +1,9 @@
+activity__longest_strike_above_mean
+activity__autocorrelation__lag_4
+activity__cwt_coefficients__coeff_3__w_2__widths_(2, 5, 10, 20)
+activity__change_quantiles__f_agg_"var"__isabs_False__qh_0.6__ql_0.2
+activity__change_quantiles__f_agg_"mean"__isabs_True__qh_1.0__ql_0.2
+activity__fft_coefficient__attr_"imag"__coeff_3
+activity__fft_coefficient__attr_"angle"__coeff_2
+activity__fft_coefficient__attr_"angle"__coeff_5
+activity__agg_linear_trend__attr_"rvalue"__chunk_len_5__f_agg_"var"

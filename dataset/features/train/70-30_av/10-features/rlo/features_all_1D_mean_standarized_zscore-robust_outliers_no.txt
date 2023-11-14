@@ -1,0 +1,6 @@
+activity__longest_strike_above_mean
+activity__quantile__q_0.6
+activity__number_cwt_peaks__n_5
+activity__index_mass_quantile__q_0.4
+activity__agg_linear_trend__attr_"stderr"__chunk_len_5__f_agg_"mean"
+activity__permutation_entropy__dimension_7__tau_1

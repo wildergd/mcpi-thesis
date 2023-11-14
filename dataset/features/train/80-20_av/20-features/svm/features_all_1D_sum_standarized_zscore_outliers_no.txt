@@ -1,0 +1,5 @@
+activity__variance_larger_than_standard_deviation
+activity__quantile__q_0.2
+activity__cwt_coefficients__coeff_6__w_2__widths_(2, 5, 10, 20)
+activity__fft_coefficient__attr_"imag"__coeff_73
+activity__fft_coefficient__attr_"abs"__coeff_33

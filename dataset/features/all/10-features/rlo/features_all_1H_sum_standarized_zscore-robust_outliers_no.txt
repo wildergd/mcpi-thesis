@@ -1,0 +1,6 @@
+activity__symmetry_looking__r_0.8
+activity__cwt_coefficients__coeff_3__w_2__widths_(2, 5, 10, 20)
+activity__fft_coefficient__attr_"real"__coeff_25
+activity__fft_coefficient__attr_"imag"__coeff_60
+activity__fft_coefficient__attr_"angle"__coeff_32
+activity__mean_n_absolute_max__number_of_maxima_7

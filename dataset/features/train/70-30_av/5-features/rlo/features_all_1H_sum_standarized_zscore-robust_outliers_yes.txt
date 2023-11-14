@@ -1,0 +1,4 @@
+activity__ratio_value_number_to_time_series_length
+activity__fft_coefficient__attr_"abs"__coeff_16
+activity__fft_coefficient__attr_"angle"__coeff_42
+activity__fft_aggregated__aggtype_"skew"

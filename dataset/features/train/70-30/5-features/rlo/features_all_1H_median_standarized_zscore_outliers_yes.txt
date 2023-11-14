@@ -1,0 +1,5 @@
+activity__median
+activity__cwt_coefficients__coeff_7__w_2__widths_(2, 5, 10, 20)
+activity__fft_coefficient__attr_"real"__coeff_7
+activity__fft_coefficient__attr_"real"__coeff_99
+activity__number_crossing_m__m_0

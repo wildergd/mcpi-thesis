@@ -1,0 +1,10 @@
+activity__count_above_mean
+activity__fft_coefficient__attr_"real"__coeff_55
+activity__fft_coefficient__attr_"real"__coeff_92
+activity__fft_coefficient__attr_"imag"__coeff_46
+activity__fft_coefficient__attr_"imag"__coeff_47
+activity__fft_coefficient__attr_"imag"__coeff_48
+activity__fft_coefficient__attr_"imag"__coeff_73
+activity__fft_coefficient__attr_"abs"__coeff_24
+activity__fft_coefficient__attr_"abs"__coeff_99
+activity__number_crossing_m__m_1

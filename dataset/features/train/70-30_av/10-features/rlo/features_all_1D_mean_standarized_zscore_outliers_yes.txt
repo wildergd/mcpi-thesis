@@ -1,0 +1,5 @@
+activity__large_standard_deviation__r_0.25
+activity__cwt_coefficients__coeff_4__w_5__widths_(2, 5, 10, 20)
+activity__change_quantiles__f_agg_"var"__isabs_True__qh_0.6__ql_0.2
+activity__change_quantiles__f_agg_"mean"__isabs_True__qh_1.0__ql_0.2
+activity__friedrich_coefficients__coeff_0__m_3__r_30

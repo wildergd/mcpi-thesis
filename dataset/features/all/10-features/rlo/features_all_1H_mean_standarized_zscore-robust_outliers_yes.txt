@@ -1,0 +1,7 @@
+activity__quantile__q_0.2
+activity__fft_coefficient__attr_"real"__coeff_92
+activity__fft_coefficient__attr_"imag"__coeff_47
+activity__fft_coefficient__attr_"abs"__coeff_13
+activity__fft_coefficient__attr_"angle"__coeff_22
+activity__max_langevin_fixed_point__m_3__r_30
+activity__ratio_beyond_r_sigma__r_1.5

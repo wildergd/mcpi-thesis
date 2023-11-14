@@ -1,0 +1,2 @@
+activity__percentage_of_reoccurring_values_to_all_values
+activity__c3__lag_1

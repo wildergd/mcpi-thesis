@@ -1,0 +1,4 @@
+activity__autocorrelation__lag_8
+activity__change_quantiles__f_agg_"var"__isabs_False__qh_0.8__ql_0.4
+activity__augmented_dickey_fuller__attr_"pvalue"__autolag_"AIC"
+activity__fourier_entropy__bins_100

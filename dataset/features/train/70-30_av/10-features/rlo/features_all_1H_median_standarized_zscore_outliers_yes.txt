@@ -1,0 +1,6 @@
+activity__median
+activity__fft_coefficient__attr_"real"__coeff_27
+activity__fft_coefficient__attr_"real"__coeff_82
+activity__fft_coefficient__attr_"angle"__coeff_60
+activity__fft_coefficient__attr_"angle"__coeff_96
+activity__number_crossing_m__m_0

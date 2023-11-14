@@ -1,0 +1,10 @@
+activity__c3__lag_1
+activity__cwt_coefficients__coeff_6__w_5__widths_(2, 5, 10, 20)
+activity__cwt_coefficients__coeff_6__w_20__widths_(2, 5, 10, 20)
+activity__fft_coefficient__attr_"real"__coeff_31
+activity__fft_coefficient__attr_"real"__coeff_39
+activity__fft_coefficient__attr_"imag"__coeff_48
+activity__fft_coefficient__attr_"abs"__coeff_44
+activity__fft_coefficient__attr_"abs"__coeff_50
+activity__fft_coefficient__attr_"abs"__coeff_86
+activity__max_langevin_fixed_point__m_3__r_30

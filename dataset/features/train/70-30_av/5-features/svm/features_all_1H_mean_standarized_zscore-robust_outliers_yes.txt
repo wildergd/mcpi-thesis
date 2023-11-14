@@ -1,0 +1,3 @@
+activity__mean
+activity__symmetry_looking__r_0.25
+activity__energy_ratio_by_chunks__num_segments_10__segment_focus_3

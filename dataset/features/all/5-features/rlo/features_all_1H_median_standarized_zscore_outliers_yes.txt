@@ -1,0 +1,5 @@
+activity__count_below_mean
+activity__binned_entropy__max_bins_10
+activity__change_quantiles__f_agg_"var"__isabs_False__qh_1.0__ql_0.6
+activity__fft_coefficient__attr_"real"__coeff_55
+activity__fft_coefficient__attr_"angle"__coeff_8

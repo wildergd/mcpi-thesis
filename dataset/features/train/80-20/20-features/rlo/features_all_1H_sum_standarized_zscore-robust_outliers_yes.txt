@@ -1,0 +1,8 @@
+activity__c3__lag_2
+activity__symmetry_looking__r_0.1
+activity__number_cwt_peaks__n_1
+activity__fft_coefficient__attr_"real"__coeff_27
+activity__fft_coefficient__attr_"real"__coeff_82
+activity__fft_coefficient__attr_"abs"__coeff_16
+activity__max_langevin_fixed_point__m_3__r_30
+activity__agg_linear_trend__attr_"slope"__chunk_len_5__f_agg_"mean"

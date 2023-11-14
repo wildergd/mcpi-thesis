@@ -1,0 +1,7 @@
+activity__c3__lag_1
+activity__quantile__q_0.9
+activity__fft_coefficient__attr_"abs"__coeff_16
+activity__fft_coefficient__attr_"angle"__coeff_0
+activity__fft_coefficient__attr_"angle"__coeff_41
+activity__max_langevin_fixed_point__m_3__r_30
+activity__agg_linear_trend__attr_"slope"__chunk_len_50__f_agg_"max"

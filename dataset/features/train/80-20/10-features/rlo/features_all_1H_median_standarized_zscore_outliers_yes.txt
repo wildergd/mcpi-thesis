@@ -1,0 +1,5 @@
+activity__partial_autocorrelation__lag_1
+activity__binned_entropy__max_bins_10
+activity__change_quantiles__f_agg_"mean"__isabs_True__qh_1.0__ql_0.2
+activity__fft_coefficient__attr_"abs"__coeff_87
+activity__fft_coefficient__attr_"angle"__coeff_8

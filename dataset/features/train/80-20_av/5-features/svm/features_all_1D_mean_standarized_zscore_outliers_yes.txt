@@ -1,0 +1,4 @@
+activity__autocorrelation__lag_9
+activity__cwt_coefficients__coeff_0__w_10__widths_(2, 5, 10, 20)
+activity__friedrich_coefficients__coeff_0__m_3__r_30
+activity__energy_ratio_by_chunks__num_segments_10__segment_focus_2

@@ -1,0 +1,8 @@
+activity__sum_of_reoccurring_data_points
+activity__fft_coefficient__attr_"real"__coeff_7
+activity__fft_coefficient__attr_"real"__coeff_23
+activity__fft_coefficient__attr_"real"__coeff_25
+activity__fft_coefficient__attr_"real"__coeff_27
+activity__fft_coefficient__attr_"imag"__coeff_2
+activity__fft_coefficient__attr_"imag"__coeff_39
+activity__fft_coefficient__attr_"abs"__coeff_97

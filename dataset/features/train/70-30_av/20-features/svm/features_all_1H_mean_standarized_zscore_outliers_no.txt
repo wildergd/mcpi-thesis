@@ -1,0 +1,8 @@
+activity__abs_energy
+activity__fft_coefficient__attr_"angle"__coeff_11
+activity__fft_coefficient__attr_"angle"__coeff_47
+activity__fft_coefficient__attr_"angle"__coeff_60
+activity__fft_coefficient__attr_"angle"__coeff_83
+activity__fft_coefficient__attr_"angle"__coeff_85
+activity__range_count__max_1__min_-1
+activity__range_count__max_1000000000000.0__min_0

@@ -1,0 +1,9 @@
+activity__quantile__q_0.4
+activity__binned_entropy__max_bins_10
+activity__change_quantiles__f_agg_"var"__isabs_False__qh_1.0__ql_0.0
+activity__fft_coefficient__attr_"real"__coeff_3
+activity__fft_coefficient__attr_"imag"__coeff_15
+activity__fft_coefficient__attr_"angle"__coeff_85
+activity__fft_coefficient__attr_"angle"__coeff_95
+activity__range_count__max_1000000000000.0__min_0
+activity__number_crossing_m__m_0

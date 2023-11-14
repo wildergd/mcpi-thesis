@@ -1,0 +1,6 @@
+activity__c3__lag_1
+activity__ar_coefficient__coeff_10__k_10
+activity__fft_coefficient__attr_"real"__coeff_0
+activity__fft_coefficient__attr_"real"__coeff_46
+activity__fft_coefficient__attr_"real"__coeff_75
+activity__fft_coefficient__attr_"angle"__coeff_42

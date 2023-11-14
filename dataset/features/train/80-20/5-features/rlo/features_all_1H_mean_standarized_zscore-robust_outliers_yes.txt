@@ -1,0 +1,5 @@
+activity__c3__lag_1
+activity__c3__lag_2
+activity__change_quantiles__f_agg_"var"__isabs_False__qh_1.0__ql_0.8
+activity__fft_coefficient__attr_"imag"__coeff_82
+activity__fft_coefficient__attr_"angle"__coeff_77

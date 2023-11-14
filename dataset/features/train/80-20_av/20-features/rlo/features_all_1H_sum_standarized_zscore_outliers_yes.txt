@@ -1,0 +1,5 @@
+activity__c3__lag_1
+activity__number_cwt_peaks__n_1
+activity__fft_coefficient__attr_"imag"__coeff_89
+activity__fft_coefficient__attr_"angle"__coeff_54
+activity__friedrich_coefficients__coeff_3__m_3__r_30

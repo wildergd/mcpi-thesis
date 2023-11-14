@@ -1,0 +1,4 @@
+activity__variance_larger_than_standard_deviation
+activity__autocorrelation__lag_9
+activity__cwt_coefficients__coeff_6__w_5__widths_(2, 5, 10, 20)
+activity__change_quantiles__f_agg_"mean"__isabs_True__qh_1.0__ql_0.2

@@ -1,0 +1,5 @@
+activity__fft_coefficient__attr_"real"__coeff_19
+activity__fft_coefficient__attr_"imag"__coeff_54
+activity__fft_coefficient__attr_"imag"__coeff_73
+activity__fft_coefficient__attr_"abs"__coeff_56
+activity__range_count__max_0__min_-1000000000000.0

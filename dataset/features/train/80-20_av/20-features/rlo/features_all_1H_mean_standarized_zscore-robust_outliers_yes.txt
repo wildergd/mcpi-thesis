@@ -1,0 +1,12 @@
+activity__standard_deviation
+activity__time_reversal_asymmetry_statistic__lag_1
+activity__cid_ce__normalize_False
+activity__symmetry_looking__r_0.30000000000000004
+activity__large_standard_deviation__r_0.75
+activity__number_cwt_peaks__n_1
+activity__cwt_coefficients__coeff_3__w_2__widths_(2, 5, 10, 20)
+activity__cwt_coefficients__coeff_6__w_20__widths_(2, 5, 10, 20)
+activity__change_quantiles__f_agg_"mean"__isabs_True__qh_1.0__ql_0.2
+activity__fft_coefficient__attr_"real"__coeff_44
+activity__agg_linear_trend__attr_"rvalue"__chunk_len_10__f_agg_"var"
+activity__number_crossing_m__m_1

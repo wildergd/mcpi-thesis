@@ -1,0 +1,7 @@
+activity__length
+activity__c3__lag_3
+activity__number_cwt_peaks__n_5
+activity__cwt_coefficients__coeff_3__w_5__widths_(2, 5, 10, 20)
+activity__cwt_coefficients__coeff_6__w_10__widths_(2, 5, 10, 20)
+activity__fft_coefficient__attr_"imag"__coeff_2
+activity__friedrich_coefficients__coeff_2__m_3__r_30

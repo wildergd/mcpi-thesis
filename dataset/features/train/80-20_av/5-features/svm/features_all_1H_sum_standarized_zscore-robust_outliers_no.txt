@@ -1,0 +1,5 @@
+activity__count_below_mean
+activity__fft_coefficient__attr_"real"__coeff_25
+activity__fft_coefficient__attr_"real"__coeff_86
+activity__fft_coefficient__attr_"imag"__coeff_46
+activity__fft_aggregated__aggtype_"centroid"

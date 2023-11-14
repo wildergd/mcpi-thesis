@@ -1,0 +1,8 @@
+activity__count_above_mean
+activity__symmetry_looking__r_0.45
+activity__number_cwt_peaks__n_5
+activity__fft_coefficient__attr_"imag"__coeff_8
+activity__fft_coefficient__attr_"imag"__coeff_10
+activity__fft_coefficient__attr_"abs"__coeff_1
+activity__fft_coefficient__attr_"abs"__coeff_22
+activity__fft_coefficient__attr_"abs"__coeff_24

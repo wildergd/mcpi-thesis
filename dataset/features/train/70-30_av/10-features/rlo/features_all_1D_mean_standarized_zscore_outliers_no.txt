@@ -1,0 +1,2 @@
+activity__longest_strike_above_mean
+activity__change_quantiles__f_agg_"var"__isabs_False__qh_1.0__ql_0.2

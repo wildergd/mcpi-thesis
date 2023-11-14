@@ -1,0 +1,6 @@
+activity__c3__lag_2
+activity__cwt_coefficients__coeff_0__w_5__widths_(2, 5, 10, 20)
+activity__change_quantiles__f_agg_"mean"__isabs_True__qh_0.8__ql_0.6
+activity__change_quantiles__f_agg_"var"__isabs_False__qh_1.0__ql_0.8
+activity__friedrich_coefficients__coeff_3__m_3__r_30
+activity__agg_linear_trend__attr_"rvalue"__chunk_len_10__f_agg_"min"

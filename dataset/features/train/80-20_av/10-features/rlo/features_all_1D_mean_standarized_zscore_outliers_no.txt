@@ -1,0 +1,4 @@
+activity__c3__lag_2
+activity__cwt_coefficients__coeff_2__w_2__widths_(2, 5, 10, 20)
+activity__cwt_coefficients__coeff_10__w_10__widths_(2, 5, 10, 20)
+activity__change_quantiles__f_agg_"mean"__isabs_False__qh_0.8__ql_0.4

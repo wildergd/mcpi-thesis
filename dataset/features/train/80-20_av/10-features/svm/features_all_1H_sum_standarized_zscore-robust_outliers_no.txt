@@ -1,0 +1,7 @@
+activity__fft_coefficient__attr_"real"__coeff_25
+activity__fft_coefficient__attr_"real"__coeff_90
+activity__fft_coefficient__attr_"imag"__coeff_2
+activity__fft_coefficient__attr_"imag"__coeff_10
+activity__fft_coefficient__attr_"imag"__coeff_22
+activity__fft_coefficient__attr_"imag"__coeff_76
+activity__fft_aggregated__aggtype_"kurtosis"

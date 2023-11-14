@@ -1,0 +1,4 @@
+activity__count_below_mean
+activity__c3__lag_1
+activity__quantile__q_0.4
+activity__fft_coefficient__attr_"angle"__coeff_90

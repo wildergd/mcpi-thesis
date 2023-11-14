@@ -1,0 +1,7 @@
+activity__longest_strike_above_mean
+activity__cwt_coefficients__coeff_3__w_10__widths_(2, 5, 10, 20)
+activity__cwt_coefficients__coeff_3__w_20__widths_(2, 5, 10, 20)
+activity__cwt_coefficients__coeff_6__w_10__widths_(2, 5, 10, 20)
+activity__fft_coefficient__attr_"angle"__coeff_5
+activity__friedrich_coefficients__coeff_2__m_3__r_30
+activity__agg_linear_trend__attr_"stderr"__chunk_len_5__f_agg_"var"

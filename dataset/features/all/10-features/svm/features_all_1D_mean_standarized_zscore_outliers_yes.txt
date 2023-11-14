@@ -1,0 +1,6 @@
+activity__autocorrelation__lag_4
+activity__change_quantiles__f_agg_"var"__isabs_False__qh_0.6__ql_0.0
+activity__change_quantiles__f_agg_"var"__isabs_True__qh_0.4__ql_0.2
+activity__change_quantiles__f_agg_"mean"__isabs_False__qh_0.8__ql_0.4
+activity__change_quantiles__f_agg_"mean"__isabs_True__qh_1.0__ql_0.8
+activity__augmented_dickey_fuller__attr_"teststat"__autolag_"AIC"

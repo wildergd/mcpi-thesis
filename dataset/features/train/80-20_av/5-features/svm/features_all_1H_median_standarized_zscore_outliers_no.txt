@@ -1,0 +1,5 @@
+activity__count_above_mean
+activity__fft_coefficient__attr_"imag"__coeff_25
+activity__fft_coefficient__attr_"abs"__coeff_88
+activity__range_count__max_1000000000000.0__min_0
+activity__number_crossing_m__m_0

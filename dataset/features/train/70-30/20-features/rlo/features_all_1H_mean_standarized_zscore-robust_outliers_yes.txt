@@ -1,0 +1,5 @@
+activity__sum_of_reoccurring_data_points
+activity__fft_coefficient__attr_"real"__coeff_28
+activity__fft_coefficient__attr_"angle"__coeff_42
+activity__fft_coefficient__attr_"angle"__coeff_72
+activity__fft_coefficient__attr_"angle"__coeff_93

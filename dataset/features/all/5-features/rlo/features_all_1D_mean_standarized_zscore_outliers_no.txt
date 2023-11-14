@@ -1,0 +1,5 @@
+activity__absolute_sum_of_changes
+activity__c3__lag_3
+activity__large_standard_deviation__r_0.35000000000000003
+activity__cwt_coefficients__coeff_1__w_2__widths_(2, 5, 10, 20)
+activity__change_quantiles__f_agg_"mean"__isabs_False__qh_0.8__ql_0.4

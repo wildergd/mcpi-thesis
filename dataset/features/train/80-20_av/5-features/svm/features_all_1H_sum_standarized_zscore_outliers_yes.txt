@@ -1,0 +1,3 @@
+activity__c3__lag_1
+activity__symmetry_looking__r_0.65
+activity__friedrich_coefficients__coeff_3__m_3__r_30

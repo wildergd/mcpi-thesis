@@ -1,0 +1,8 @@
+activity__c3__lag_2
+activity__cwt_coefficients__coeff_3__w_2__widths_(2, 5, 10, 20)
+activity__spkt_welch_density__coeff_8
+activity__change_quantiles__f_agg_"mean"__isabs_False__qh_0.8__ql_0.4
+activity__fft_coefficient__attr_"imag"__coeff_39
+activity__fft_coefficient__attr_"imag"__coeff_46
+activity__fft_coefficient__attr_"imag"__coeff_75
+activity__fft_aggregated__aggtype_"skew"

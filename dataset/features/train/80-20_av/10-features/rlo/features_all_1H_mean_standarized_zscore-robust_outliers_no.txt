@@ -1,0 +1,7 @@
+activity__c3__lag_1
+activity__change_quantiles__f_agg_"var"__isabs_False__qh_1.0__ql_0.2
+activity__fft_coefficient__attr_"imag"__coeff_43
+activity__fft_coefficient__attr_"imag"__coeff_46
+activity__fft_coefficient__attr_"imag"__coeff_47
+activity__agg_linear_trend__attr_"intercept"__chunk_len_5__f_agg_"min"
+activity__mean_n_absolute_max__number_of_maxima_7

@@ -1,0 +1,7 @@
+activity__count_below_mean
+activity__ar_coefficient__coeff_5__k_10
+activity__fft_coefficient__attr_"real"__coeff_23
+activity__fft_coefficient__attr_"real"__coeff_86
+activity__fft_coefficient__attr_"real"__coeff_99
+activity__number_crossing_m__m_0
+activity__ratio_beyond_r_sigma__r_1

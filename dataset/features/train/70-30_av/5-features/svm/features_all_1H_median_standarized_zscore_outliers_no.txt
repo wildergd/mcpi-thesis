@@ -1,0 +1,3 @@
+activity__fft_coefficient__attr_"real"__coeff_7
+activity__range_count__max_1000000000000.0__min_0
+activity__number_crossing_m__m_0

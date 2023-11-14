@@ -1,0 +1,5 @@
+activity__cwt_coefficients__coeff_8__w_10__widths_(2, 5, 10, 20)
+activity__fft_coefficient__attr_"imag"__coeff_61
+activity__fft_coefficient__attr_"angle"__coeff_32
+activity__friedrich_coefficients__coeff_2__m_3__r_30
+activity__augmented_dickey_fuller__attr_"teststat"__autolag_"AIC"

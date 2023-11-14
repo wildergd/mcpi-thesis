@@ -1,0 +1,7 @@
+activity__symmetry_looking__r_0.05
+activity__cwt_coefficients__coeff_4__w_5__widths_(2, 5, 10, 20)
+activity__cwt_coefficients__coeff_6__w_20__widths_(2, 5, 10, 20)
+activity__cwt_coefficients__coeff_7__w_10__widths_(2, 5, 10, 20)
+activity__friedrich_coefficients__coeff_2__m_3__r_30
+activity__augmented_dickey_fuller__attr_"usedlag"__autolag_"AIC"
+activity__lempel_ziv_complexity__bins_2

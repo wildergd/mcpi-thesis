@@ -1,0 +1,5 @@
+activity__number_cwt_peaks__n_1
+activity__fft_coefficient__attr_"imag"__coeff_8
+activity__fft_coefficient__attr_"imag"__coeff_94
+activity__fft_coefficient__attr_"abs"__coeff_88
+activity__range_count__max_1000000000000.0__min_0

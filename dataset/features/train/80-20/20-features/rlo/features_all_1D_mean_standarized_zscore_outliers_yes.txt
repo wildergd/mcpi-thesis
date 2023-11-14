@@ -1,0 +1,8 @@
+activity__longest_strike_above_mean
+activity__c3__lag_2
+activity__autocorrelation__lag_4
+activity__partial_autocorrelation__lag_4
+activity__change_quantiles__f_agg_"var"__isabs_False__qh_0.2__ql_0.0
+activity__change_quantiles__f_agg_"mean"__isabs_False__qh_0.8__ql_0.4
+activity__fft_coefficient__attr_"angle"__coeff_2
+activity__count_above__t_0

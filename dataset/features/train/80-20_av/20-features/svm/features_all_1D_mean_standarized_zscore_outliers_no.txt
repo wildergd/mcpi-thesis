@@ -1,0 +1,8 @@
+activity__c3__lag_2
+activity__large_standard_deviation__r_0.25
+activity__cwt_coefficients__coeff_6__w_2__widths_(2, 5, 10, 20)
+activity__cwt_coefficients__coeff_6__w_5__widths_(2, 5, 10, 20)
+activity__cwt_coefficients__coeff_6__w_20__widths_(2, 5, 10, 20)
+activity__change_quantiles__f_agg_"var"__isabs_False__qh_0.8__ql_0.2
+activity__fft_coefficient__attr_"abs"__coeff_4
+activity__fft_coefficient__attr_"abs"__coeff_35

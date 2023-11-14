@@ -1,0 +1,7 @@
+activity__median
+activity__change_quantiles__f_agg_"var"__isabs_True__qh_1.0__ql_0.8
+activity__fft_coefficient__attr_"real"__coeff_27
+activity__fft_coefficient__attr_"imag"__coeff_12
+activity__fft_coefficient__attr_"imag"__coeff_45
+activity__fft_coefficient__attr_"abs"__coeff_88
+activity__fft_coefficient__attr_"angle"__coeff_73

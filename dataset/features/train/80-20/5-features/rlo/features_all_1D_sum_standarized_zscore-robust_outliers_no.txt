@@ -1,0 +1,5 @@
+activity__partial_autocorrelation__lag_4
+activity__index_mass_quantile__q_0.8
+activity__change_quantiles__f_agg_"mean"__isabs_True__qh_1.0__ql_0.2
+activity__change_quantiles__f_agg_"mean"__isabs_False__qh_0.8__ql_0.4
+activity__change_quantiles__f_agg_"var"__isabs_True__qh_1.0__ql_0.4

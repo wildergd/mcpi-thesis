@@ -1,0 +1,5 @@
+activity__mean
+activity__change_quantiles__f_agg_"mean"__isabs_True__qh_0.8__ql_0.6
+activity__fft_coefficient__attr_"real"__coeff_27
+activity__fft_aggregated__aggtype_"centroid"
+activity__friedrich_coefficients__coeff_0__m_3__r_30

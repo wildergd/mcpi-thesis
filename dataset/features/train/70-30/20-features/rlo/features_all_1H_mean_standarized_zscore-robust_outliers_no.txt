@@ -1,0 +1,7 @@
+activity__large_standard_deviation__r_0.8
+activity__fft_coefficient__attr_"abs"__coeff_53
+activity__fft_coefficient__attr_"angle"__coeff_39
+activity__fft_coefficient__attr_"angle"__coeff_77
+activity__fft_coefficient__attr_"angle"__coeff_78
+activity__fft_coefficient__attr_"angle"__coeff_81
+activity__agg_linear_trend__attr_"intercept"__chunk_len_10__f_agg_"mean"

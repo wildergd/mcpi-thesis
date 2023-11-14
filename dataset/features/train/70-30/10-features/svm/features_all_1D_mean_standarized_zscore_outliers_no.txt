@@ -1,0 +1,4 @@
+activity__cwt_coefficients__coeff_3__w_2__widths_(2, 5, 10, 20)
+activity__change_quantiles__f_agg_"mean"__isabs_True__qh_1.0__ql_0.2
+activity__friedrich_coefficients__coeff_0__m_3__r_30
+activity__augmented_dickey_fuller__attr_"teststat"__autolag_"AIC"

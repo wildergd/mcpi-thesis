@@ -1,0 +1,1 @@
+activity__augmented_dickey_fuller__attr_"teststat"__autolag_"AIC"

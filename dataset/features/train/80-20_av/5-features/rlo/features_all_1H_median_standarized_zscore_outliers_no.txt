@@ -1,0 +1,5 @@
+activity__c3__lag_2
+activity__quantile__q_0.6
+activity__fft_coefficient__attr_"abs"__coeff_88
+activity__fft_coefficient__attr_"abs"__coeff_95
+activity__fft_coefficient__attr_"angle"__coeff_8

@@ -1,0 +1,6 @@
+activity__quantile__q_0.2
+activity__fft_coefficient__attr_"imag"__coeff_60
+activity__fft_coefficient__attr_"imag"__coeff_89
+activity__fft_coefficient__attr_"abs"__coeff_22
+activity__fft_aggregated__aggtype_"centroid"
+activity__ratio_beyond_r_sigma__r_1.5

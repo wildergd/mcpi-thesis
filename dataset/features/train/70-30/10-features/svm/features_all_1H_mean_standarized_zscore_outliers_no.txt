@@ -1,0 +1,5 @@
+activity__change_quantiles__f_agg_"var"__isabs_False__qh_0.8__ql_0.2
+activity__fft_coefficient__attr_"angle"__coeff_32
+activity__fft_coefficient__attr_"angle"__coeff_83
+activity__range_count__max_0__min_-1000000000000.0
+activity__agg_linear_trend__attr_"rvalue"__chunk_len_50__f_agg_"min"

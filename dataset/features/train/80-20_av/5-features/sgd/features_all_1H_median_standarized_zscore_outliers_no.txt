@@ -1,0 +1,1 @@
+activity__cwt_coefficients__coeff_5__w_10__widths_(2, 5, 10, 20)

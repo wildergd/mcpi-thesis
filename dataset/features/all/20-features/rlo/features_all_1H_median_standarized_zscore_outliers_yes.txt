@@ -1,0 +1,8 @@
+activity__count_below_mean
+activity__binned_entropy__max_bins_10
+activity__cwt_coefficients__coeff_5__w_5__widths_(2, 5, 10, 20)
+activity__change_quantiles__f_agg_"var"__isabs_False__qh_0.8__ql_0.0
+activity__change_quantiles__f_agg_"var"__isabs_False__qh_0.4__ql_0.2
+activity__fft_coefficient__attr_"imag"__coeff_8
+activity__fft_coefficient__attr_"abs"__coeff_22
+activity__fft_coefficient__attr_"abs"__coeff_36

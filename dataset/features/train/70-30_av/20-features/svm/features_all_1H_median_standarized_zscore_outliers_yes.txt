@@ -1,0 +1,6 @@
+activity__cwt_coefficients__coeff_1__w_2__widths_(2, 5, 10, 20)
+activity__cwt_coefficients__coeff_13__w_2__widths_(2, 5, 10, 20)
+activity__fft_coefficient__attr_"real"__coeff_48
+activity__fft_coefficient__attr_"real"__coeff_55
+activity__fft_coefficient__attr_"imag"__coeff_85
+activity__number_crossing_m__m_0

@@ -1,0 +1,8 @@
+activity__longest_strike_above_mean
+activity__c3__lag_2
+activity__partial_autocorrelation__lag_4
+activity__number_cwt_peaks__n_5
+activity__cwt_coefficients__coeff_6__w_20__widths_(2, 5, 10, 20)
+activity__change_quantiles__f_agg_"var"__isabs_False__qh_1.0__ql_0.2
+activity__change_quantiles__f_agg_"mean"__isabs_False__qh_0.8__ql_0.4
+activity__change_quantiles__f_agg_"var"__isabs_False__qh_0.8__ql_0.6

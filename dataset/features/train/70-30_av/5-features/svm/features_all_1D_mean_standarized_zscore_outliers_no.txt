@@ -1,0 +1,2 @@
+activity__friedrich_coefficients__coeff_0__m_3__r_30
+activity__augmented_dickey_fuller__attr_"teststat"__autolag_"AIC"

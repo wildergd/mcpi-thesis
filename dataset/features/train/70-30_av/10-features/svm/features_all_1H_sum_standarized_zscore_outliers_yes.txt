@@ -1,0 +1,6 @@
+activity__count_above_mean
+activity__fft_coefficient__attr_"imag"__coeff_19
+activity__fft_coefficient__attr_"angle"__coeff_7
+activity__fft_coefficient__attr_"angle"__coeff_32
+activity__fft_coefficient__attr_"angle"__coeff_55
+activity__fft_coefficient__attr_"angle"__coeff_83

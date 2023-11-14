@@ -1,0 +1,8 @@
+activity__large_standard_deviation__r_0.2
+activity__autocorrelation__lag_1
+activity__cwt_coefficients__coeff_3__w_2__widths_(2, 5, 10, 20)
+activity__fft_coefficient__attr_"abs"__coeff_13
+activity__fft_coefficient__attr_"abs"__coeff_22
+activity__friedrich_coefficients__coeff_0__m_3__r_30
+activity__max_langevin_fixed_point__m_3__r_30
+activity__ratio_beyond_r_sigma__r_1.5

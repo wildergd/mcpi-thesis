@@ -1,0 +1,9 @@
+activity__longest_strike_above_mean
+activity__last_location_of_minimum
+activity__cwt_coefficients__coeff_0__w_5__widths_(2, 5, 10, 20)
+activity__cwt_coefficients__coeff_10__w_20__widths_(2, 5, 10, 20)
+activity__fft_coefficient__attr_"imag"__coeff_4
+activity__fft_coefficient__attr_"abs"__coeff_4
+activity__friedrich_coefficients__coeff_2__m_3__r_30
+activity__linear_trend__attr_"rvalue"
+activity__augmented_dickey_fuller__attr_"teststat"__autolag_"AIC"

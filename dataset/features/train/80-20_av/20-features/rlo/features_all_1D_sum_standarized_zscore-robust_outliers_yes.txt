@@ -1,0 +1,10 @@
+activity__longest_strike_above_mean
+activity__c3__lag_3
+activity__autocorrelation__lag_4
+activity__cwt_coefficients__coeff_1__w_2__widths_(2, 5, 10, 20)
+activity__cwt_coefficients__coeff_5__w_2__widths_(2, 5, 10, 20)
+activity__change_quantiles__f_agg_"var"__isabs_False__qh_0.2__ql_0.0
+activity__change_quantiles__f_agg_"mean"__isabs_True__qh_0.4__ql_0.0
+activity__fft_coefficient__attr_"angle"__coeff_2
+activity__lempel_ziv_complexity__bins_2
+activity__fourier_entropy__bins_10

@@ -1,0 +1,6 @@
+activity__c3__lag_1
+activity__symmetry_looking__r_0.9
+activity__fft_coefficient__attr_"imag"__coeff_45
+activity__fft_coefficient__attr_"imag"__coeff_60
+activity__fft_coefficient__attr_"angle"__coeff_0
+activity__friedrich_coefficients__coeff_3__m_3__r_30

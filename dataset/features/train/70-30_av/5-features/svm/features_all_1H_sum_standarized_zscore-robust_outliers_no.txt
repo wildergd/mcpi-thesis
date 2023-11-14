@@ -1,0 +1,4 @@
+activity__fft_coefficient__attr_"imag"__coeff_60
+activity__fft_coefficient__attr_"abs"__coeff_1
+activity__fft_coefficient__attr_"abs"__coeff_27
+activity__fft_aggregated__aggtype_"centroid"

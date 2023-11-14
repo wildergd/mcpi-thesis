@@ -1,0 +1,7 @@
+activity__count_below_mean
+activity__cwt_coefficients__coeff_3__w_10__widths_(2, 5, 10, 20)
+activity__fft_coefficient__attr_"real"__coeff_55
+activity__fft_coefficient__attr_"imag"__coeff_96
+activity__fft_coefficient__attr_"abs"__coeff_9
+activity__fft_coefficient__attr_"abs"__coeff_95
+activity__fft_coefficient__attr_"angle"__coeff_8

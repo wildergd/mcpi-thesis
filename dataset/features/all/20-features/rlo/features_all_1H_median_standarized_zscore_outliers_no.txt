@@ -1,0 +1,11 @@
+activity__minimum
+activity__quantile__q_0.9
+activity__partial_autocorrelation__lag_8
+activity__fft_coefficient__attr_"real"__coeff_47
+activity__fft_coefficient__attr_"real"__coeff_51
+activity__fft_coefficient__attr_"real"__coeff_99
+activity__fft_coefficient__attr_"imag"__coeff_34
+activity__fft_coefficient__attr_"abs"__coeff_12
+activity__fft_coefficient__attr_"abs"__coeff_90
+activity__fft_coefficient__attr_"angle"__coeff_26
+activity__fft_coefficient__attr_"angle"__coeff_94
