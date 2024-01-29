@@ -12,7 +12,7 @@ import warnings
 import re
 import numpy as np
 import pandas as pd
-from sklearn.metrics import roc_curve, auc, confusion_matrix, classification_report, roc_auc_score
+from sklearn.metrics import roc_curve, auc, confusion_matrix, classification_report
 from sklearn.metrics.pairwise import pairwise_distances
 from sklearn.model_selection import LeaveOneOut
 from sklearn.neighbors import NearestCentroid
