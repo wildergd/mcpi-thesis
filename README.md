@@ -76,7 +76,7 @@ $ jupyter notebook python-code/notebooks/deployment_results_analysis_rmse.ipynb
 #### To see results in plots 
 
 ```bash
-$ jupyter notebook python-code/notebooks/deployment_results_analysis_rmse.ipynb
+$ jupyter notebook python-code/notebooks/deployment_results_analysis_plots.ipynb
 ```
 
 ## References
