@@ -10,3 +10,4 @@ skops==0.8.0
 statsmodels==0.14.0
 tsfresh==0.20.1
 prophet==1.1.4
+matplotlib==3.7.1
