@@ -73,5 +73,11 @@ $ jupyter notebook python-code/notebooks/deployment_results_analysis_mape.ipynb
 $ jupyter notebook python-code/notebooks/deployment_results_analysis_rmse.ipynb
 ```
 
+#### To see results in plots 
+
+```bash
+$ jupyter notebook python-code/notebooks/deployment_results_analysis_rmse.ipynb
+```
+
 ## References
 - Garcia-Ceja, E., Riegler, M., Jakobsen, P., Tørresen, J., Nordgreen, T., Oedegaard, K. J., & Fasmer, O. B. (2018). Depresjon: A motor activity database of depression episodes in unipolar and bipolar patients. Proceedings of the 9th ACM Multimedia Systems Conference, MMSys 2018, 472–477. [https://doi.org/10.1145/3204949.3208125](https://doi.org/10.1145/3204949.3208125)
