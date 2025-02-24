@@ -1,5 +1,5 @@
 import numpy as np
-from darts.metrics import mape, rmse, mse
+from darts.metrics import mape, rmse, mse, r2_score
 from darts.models.forecasting.baselines import NaiveSeasonal
 from darts.models.forecasting.exponential_smoothing import ExponentialSmoothing
 from darts.models.forecasting.fft import FFT
@@ -124,6 +124,7 @@ def evaluate_model(
     forecast = model.predict(len(test))
     
     scores = {
+        'R2': r2_score(test, forecast),
         'RMSE': rmse(test, forecast),
         'MSE': mse(test, forecast),
         'MAPE': mape(test, forecast)
